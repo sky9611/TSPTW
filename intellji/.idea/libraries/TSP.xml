@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="TSP">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/TSP.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
