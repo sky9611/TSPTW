@@ -13,7 +13,7 @@ public class TSPTW {
     private long idEntrepot;
     private List<Long> idLivraisons = new ArrayList<>();
     private int levelMax = 10;
-    private int levelMaxGVNS = 10;
+    private int levelMaxGVNS = 100;
 
     private static <T> List<T> deepCopy(List<T> src) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
@@ -301,7 +301,6 @@ public class TSPTW {
         long[] idArray = new long[l.size()];
         for (int i=0;i<l.size();i++)
             idArray[i]=l.get(i);
-        idArray = idArray;
         double result = 0;
         double[] arrivalTimes = calculeArrivalTime(l);
         double[] dueTimes = new double[arrivalTimes.length];

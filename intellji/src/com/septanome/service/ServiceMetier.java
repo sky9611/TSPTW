@@ -1,6 +1,7 @@
 package com.septanome.service;
 
 import com.septanome.model.*;
+import com.septanome.util.GATSPTW;
 import com.septanome.util.TSPTW;
 import com.septanome.util.UtilXML;
 import tsp.TSP1;
@@ -259,6 +260,8 @@ public class ServiceMetier {
         if (b) {
             TSPTW tsptw = new TSPTW(planLivraison, commande);
             tournee = tsptw.findSolution(20);
+//            GATSPTW ga = new GATSPTW(planLivraison, commande);
+//            tournee = ga.findSolution(500);
         } else {
             int tpsLimite = 1000;
             HashMap<Long, HashMap<Long, Chemin>> cheminsMap = planLivraison.getCheminsMap();
