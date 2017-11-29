@@ -17,8 +17,8 @@ import java.util.HashMap;
 public class ihm extends JFrame implements ActionListener {
 
 
-
-
+    JPanel but1=new JPanel();
+    JPanel menu=new JPanel();
     JButton valider=new JButton("valider");
     JButton b1     =new JButton("          action 1            ");
     JButton b2     =new JButton("          action 2            ");
@@ -46,7 +46,7 @@ public class ihm extends JFrame implements ActionListener {
         pan.setLayout(new BorderLayout());
 
         //création menu(side bar)
-        JPanel menu=new JPanel();
+        menu=new JPanel();
         menu.setPreferredSize(new Dimension(dim.width-dim.height, dim.height));
         menu.setLayout(new BoxLayout(menu,BoxLayout.Y_AXIS));
 
@@ -56,7 +56,7 @@ public class ihm extends JFrame implements ActionListener {
 
         JPanel text=new JPanel();
         text.setLayout(new BoxLayout(text,BoxLayout.X_AXIS));
-        JPanel but1=new JPanel();
+        but1=new JPanel();
         but1.setLayout(new BoxLayout(but1,BoxLayout.X_AXIS));
 
         JPanel but2=new JPanel();
@@ -197,9 +197,9 @@ public class ihm extends JFrame implements ActionListener {
             String query=loadPlan.getText();
             ServiceMetier m=new ServiceMetier();
             m.initPlan(query);
-
-            m.initCommande("fichiersXML/DLgrand10TW2.xml");
+            m.initCommande("intellji/fichiersXML/DLgrand10TW2.xml");
             m.initPlanLivraison();
+
             try {
                 m.calculerTournee(true);
             } catch (ClassNotFoundException e) {
