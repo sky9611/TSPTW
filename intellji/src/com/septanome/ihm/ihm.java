@@ -37,7 +37,8 @@ public class ihm extends JFrame implements ActionListener {
         getContentPane().setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
         pack();
         setResizable(false);
-        show();
+        setVisible(true);
+
         this.setLocationRelativeTo(null);
 
         //Instanciation content
@@ -190,6 +191,7 @@ public class ihm extends JFrame implements ActionListener {
         this.setVisible(true);
     }
     public void actionPerformed(ActionEvent arg0){
+
         if(arg0.getSource() == valider){
 
             String query=loadPlan.getText();
@@ -206,7 +208,9 @@ public class ihm extends JFrame implements ActionListener {
                 e.printStackTrace();
             }
             Plan p = m.getPlan();
-            ihm fenetre = new ihm(m);
+
+            //ihm fenetre = new ihm(m);
+
         }
 
     }
