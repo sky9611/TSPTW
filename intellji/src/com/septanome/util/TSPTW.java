@@ -13,7 +13,7 @@ public class TSPTW {
     private long idEntrepot;
     private List<Long> idLivraisons = new ArrayList<>();
     private int levelMax = 10;
-    private int levelMaxGVNS = 100;
+    private int levelMaxGVNS = 10;
 
     private static <T> List<T> deepCopy(List<T> src) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();

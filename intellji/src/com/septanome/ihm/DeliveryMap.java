@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class map extends JPanel {
+public class DeliveryMap extends JPanel {
 
     HashMap<Long,Point> p=new HashMap<Long,Point>();
     HashMap<Long,HashMap<Long,Troncon>> r=new HashMap<Long,HashMap<Long,Troncon>>();
@@ -18,7 +18,7 @@ public class map extends JPanel {
     int screenHeigth;
     ServiceMetier sm;
 
-    public map(ServiceMetier sm, int h){
+    public DeliveryMap(ServiceMetier sm, int h){
         this.sm =sm;
         screenHeigth=h;
 
@@ -28,7 +28,7 @@ public class map extends JPanel {
         commande=sm.getCommande();
     }
 
-    public void paintComponent(Graphics g){
+    public void paint(Graphics g){
 
         int xmin= Integer.MAX_VALUE;
         int xmax=Integer.MIN_VALUE;

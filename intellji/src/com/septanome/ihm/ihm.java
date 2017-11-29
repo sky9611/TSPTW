@@ -40,9 +40,7 @@ public class ihm extends JFrame implements ActionListener {
         show();
         this.setLocationRelativeTo(null);
 
-        //Instanciation content
-        map pan = new map(sm,dim.height);
-        pan.setLayout(new BorderLayout());
+
 
         //création menu(side bar)
         menu=new JPanel();
@@ -111,9 +109,9 @@ public class ihm extends JFrame implements ActionListener {
         menu.add(tourTitle);
         menu.add(tour);
 
-        pan.add(menu, BorderLayout.EAST);
-
-        this.getContentPane().add(pan);
+//        pan.add(menu, BorderLayout.EAST);
+//
+//        this.getContentPane().add(pan);
 
 
         this.setVisible(true);
