@@ -28,8 +28,7 @@ public class DeliveryMap extends JPanel {
         commande=sm.getCommande();
     }
 
-    public void paint(Graphics g){
-
+    public void paintComponent(Graphics g){
         int xmin= Integer.MAX_VALUE;
         int xmax=Integer.MIN_VALUE;
         int ymin=Integer.MAX_VALUE;

@@ -34,33 +34,35 @@ public class Dashboard extends JFrame implements ActionListener{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-        myMap.setBounds(10,10,400,600);
-        myMap.setLayout(null);
+        myMap.setBounds(10,10,800,900);
         myMap.setBackground(Color.cyan);
 
         JPanel panelChooseFile = new JPanel();
-        panelChooseFile.setBounds(600,10,500,380);
+        panelChooseFile.setBounds(900,10,500,380);
         panelChooseFile.setLayout(null);
         panelChooseFile.setBackground(Color.green);
         buttonChooseMap.addActionListener(this);
         buttonChooseCommand.addActionListener(this);
         buttonChargeMap.addActionListener(this);
-        textImportMapFile.setBounds(10,10,250,40);
-        textImportCommandFile.setBounds(10,100,250,40);
-        buttonChooseMap.setBounds(300,10,120,40);
-        buttonChooseCommand.setBounds(300,100,120,40);
-        buttonChargeMap.setBounds(300,200,120,40);
-        labelImportMap.setBounds(10,50,120,40);
+        labelImportMap.setBounds(10,10,200,30);
+        textImportMapFile.setBounds(10,50,400,30);
+        buttonChooseMap.setBounds(450,50,40,30);
+        labelImportCommand.setBounds(10,100,200,30);
+        textImportCommandFile.setBounds(10,140,400,30);
+        buttonChooseCommand.setBounds(450,140,40,30);
+        buttonChargeMap.setBounds(300,200,120,30);
         panelChooseFile.add(textImportMapFile);
         panelChooseFile.add(textImportCommandFile);
         panelChooseFile.add(buttonChooseMap);
         panelChooseFile.add(buttonChooseCommand);
         panelChooseFile.add(buttonChargeMap);
         panelChooseFile.add(labelImportMap);
+        panelChooseFile.add(labelImportCommand);
 
 
-        panelGlobal = new JPanel();
-        panelGlobal.setBounds(0,0,500,500);
+
+
+        panelGlobal.setBounds(0,0,1600,1000);
         panelGlobal.setLayout(null);
         panelGlobal.add(panelChooseFile);
         panelGlobal.add(myMap);
@@ -110,30 +112,14 @@ public class Dashboard extends JFrame implements ActionListener{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            myMap = new DeliveryMap(serviceMetier,600);
-
-
-//            EventQueue.invokeLater(new Runnable() {
-//                @Override
-//                public void run() {
-//                    System.out.println("排序");
-//
-//                    myMap.removeAll();
-//                    myMap.add(new JLabel("tianjia"));
-//                    panelGlobal.add(myMap);
-//                    myMap.updateUI();
-//                    myMap.repaint();
-//                }
-//            });
-
-//            myMap.removeAll();
-            JLabel tht = new JLabel("adfadsf");
-            tht.setBounds(0,0,50,50);
-            myMap.add(tht);
-
+            panelGlobal.remove(myMap);
+            myMap = new DeliveryMap(serviceMetier,900);
+            myMap.setBounds(10,10,800,900);
+            myMap.setLayout(null);
             panelGlobal.add(myMap);
-            myMap.updateUI();
-            myMap.repaint();
+            //myMap.updateUI();
+            repaint();
+
 
             System.out.println("finished!!!!");
         }
