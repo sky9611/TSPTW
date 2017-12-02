@@ -258,10 +258,10 @@ public class ServiceMetier {
      */
     public void calculerTournee(boolean b) throws ClassNotFoundException, IOException {
         if (b) {
-            TSPTW tsptw = new TSPTW(planLivraison, commande);
-            tournee = tsptw.findSolution(20);
-//            GATSPTW ga = new GATSPTW(planLivraison, commande);
-//            tournee = ga.findSolution(500);
+            //TSPTW tsptw = new TSPTW(planLivraison, commande);
+            //tournee = tsptw.findSolution(20);
+            GATSPTW ga = new GATSPTW(planLivraison, commande);
+            tournee = ga.findSolution(500);
         } else {
             int tpsLimite = 1000;
             HashMap<Long, HashMap<Long, Chemin>> cheminsMap = planLivraison.getCheminsMap();

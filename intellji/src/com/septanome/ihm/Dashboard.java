@@ -1,6 +1,6 @@
 package com.septanome.ihm;
 
-import com.septanome.model.Plan;
+import com.septanome.model.Point;
 import com.septanome.service.ServiceMetier;
 
 import javax.swing.*;
@@ -12,11 +12,17 @@ import java.io.IOException;
 
 public class Dashboard extends JFrame implements ActionListener{
     ServiceMetier serviceMetier = new ServiceMetier();
+    long focusedPointId;
+    int focusedPointNumber=0;
+
     JPanel myMap = new JPanel();
     JPanel panelGlobal = new JPanel();
+    JPanel panelFocusedPoint =new JPanel();
     JButton buttonChooseMap=new JButton("...");
     JButton buttonChooseCommand=new JButton("...");
     JButton buttonChargeMap = new JButton("Charger le plan");
+    JButton buttonPreviousPoint = new JButton("Precedent");
+    JButton buttonNextPoint = new JButton("Prochain");
     JLabel labelImportMap = new JLabel("Selectionnez un plan");
     JLabel labelImportCommand = new JLabel("Selectionnez une commande");
     JTextField textImportMapFile=new JTextField("D:\\My Documents\\Intellji Program\\TSPTW\\intellji\\fichiersXML\\planLyonGrand.xml");
@@ -59,16 +65,33 @@ public class Dashboard extends JFrame implements ActionListener{
         panelChooseFile.add(labelImportMap);
         panelChooseFile.add(labelImportCommand);
 
+        JPanel panelSelectPoint = new JPanel();
+        panelSelectPoint.setBounds(10,920,800,70);
+        panelSelectPoint.setLayout(null);
+        panelSelectPoint.setBackground(Color.blue);
+        buttonPreviousPoint.addActionListener(this);
+        buttonPreviousPoint.setBounds(10,10,100,50);
+        buttonNextPoint.addActionListener(this);
+        buttonNextPoint.setBounds(600,10,100,50);
+        panelSelectPoint.add(buttonPreviousPoint);
+        panelSelectPoint.add(buttonNextPoint);
 
+
+        panelFocusedPoint.setBounds(myMap.getBounds());
+        panelFocusedPoint.setLayout(null);
+        panelFocusedPoint.setOpaque(false);
 
 
         panelGlobal.setBounds(0,0,1600,1000);
         panelGlobal.setLayout(null);
         panelGlobal.add(panelChooseFile);
         panelGlobal.add(myMap);
+        panelGlobal.add(panelSelectPoint);
+        panelGlobal.add(panelFocusedPoint);
         panelGlobal.setBackground(Color.yellow);
 
         this.setContentPane(panelGlobal);
+        //this.getLayeredPane().add(panelFocusedPoint,new Integer(Integer.MAX_VALUE));
     }
 
 
@@ -120,11 +143,31 @@ public class Dashboard extends JFrame implements ActionListener{
             //myMap.updateUI();
             repaint();
 
-
+            //focusedPointId = serviceMetier.getCommande().getEntrepot().getId();
             System.out.println("finished!!!!");
+        }else if (event.getSource() == buttonNextPoint){
+            focusedPointNumber++;
+            focusedPointId = serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID();
+            Point tmpPoint = serviceMetier.getPlan().getPointsMap().get(focusedPointId);
+
+            int xmin =119978;
+            int ymin = 171346;
+            int scale = 171308;
+
+            panelGlobal.remove(panelFocusedPoint);
+            panelFocusedPoint = new JPanel();
+            panelFocusedPoint.setBounds(myMap.getBounds());
+            panelFocusedPoint.setLayout(null);
+            panelFocusedPoint.setOpaque(false);
+            panelFocusedPoint.getGraphics().fillOval((int)((((double)tmpPoint.getCoordX())-xmin)/scale*(900-12)),(int)((((double)tmpPoint.getCoordY())-ymin)/scale*(900-37)),15,15);
+            panelGlobal.add(panelFocusedPoint);
+            repaint();
+
+
         }
 
     }
+
     public static void main(String[] args){
         ServiceMetier sm = new ServiceMetier();
         Dashboard myDashboard = new Dashboard(sm);

@@ -9,14 +9,21 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
-public class DeliveryMap extends JPanel {
+public class DeliveryMap extends JPanel  {
 
     HashMap<Long,Point> p=new HashMap<Long,Point>();
     HashMap<Long,HashMap<Long,Troncon>> r=new HashMap<Long,HashMap<Long,Troncon>>();
+    HashMap<Long,Integer[]> CoordOnMap =new HashMap<Long,Integer[]>();
     Commande commande;
     int screenHeigth;
     ServiceMetier sm;
+    int xmin;
+    int xmax;
+    int ymin;
+    int ymax;
+    int scale;
 
     public DeliveryMap(ServiceMetier sm, int h){
         this.sm =sm;
@@ -29,10 +36,10 @@ public class DeliveryMap extends JPanel {
     }
 
     public void paintComponent(Graphics g){
-        int xmin= Integer.MAX_VALUE;
-        int xmax=Integer.MIN_VALUE;
-        int ymin=Integer.MAX_VALUE;
-        int ymax=Integer.MIN_VALUE;
+        xmin= Integer.MAX_VALUE;
+        xmax=Integer.MIN_VALUE;
+        ymin=Integer.MAX_VALUE;
+        ymax=Integer.MIN_VALUE;
         for(Map.Entry<Long,Point> entry:p.entrySet()){
             if(entry.getValue().getCoordX()>xmax){
                 xmax=entry.getValue().getCoordX();
@@ -48,7 +55,12 @@ public class DeliveryMap extends JPanel {
             }
         }
 
-        int scale = (ymax-ymin>xmax-xmin)? ymax-ymin:xmax-xmin;
+        scale = (ymax-ymin>xmax-xmin)? ymax-ymin:xmax-xmin;
+
+        System.out.println("xmin="+xmin);
+        System.out.println("ymin="+ymin);
+        System.out.println("scale="+scale);
+
         for(Map.Entry<Long,Point> entry:p.entrySet()){
             g.fillOval((int)((((double)entry.getValue().getCoordX())-xmin)/scale*(screenHeigth-12)),
                     (int)((((double)entry.getValue().getCoordY())-ymin)/scale*(screenHeigth-37)), 4, 4);
@@ -87,16 +99,19 @@ public class DeliveryMap extends JPanel {
             }
         }
         g.setColor(Color.green);
-        g.fillOval((int)((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth-12)),
-                (int)((((double)commande.getEntrepot().getCoordY())-ymin)/scale*(screenHeigth-37)), 8, 8);
+        int CoordX =(int)((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth-12));
+        int CoordY = (int)((((double)commande.getEntrepot().getCoordY())-ymin)/scale*(screenHeigth-37));
+        g.fillOval(CoordX, CoordY, 8, 8);
         g.setColor(Color.magenta);
 
         for(Livraison l:commande.getListLivraison()){
-            g.fillOval((int)((((double)l.getCoordX())-xmin)/scale*(screenHeigth-12)),
-                    (int)((((double)l.getCoordY())-ymin)/scale*(screenHeigth-37)), 8, 8);
+            CoordX =(int)((((double)l.getCoordX())-xmin)/scale*(screenHeigth-12));
+            CoordY = (int)((((double)l.getCoordY())-ymin)/scale*(screenHeigth-37));
+            g.fillOval(CoordX, CoordY, 8, 8);
         }
 
 
     }
+
 }
 
