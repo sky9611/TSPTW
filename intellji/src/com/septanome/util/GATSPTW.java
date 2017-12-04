@@ -20,12 +20,13 @@ public class GATSPTW {
     private double pe = 0.25;
     private int M = 1000;
     private int OBC_number;
+    private Tournee tournee = new Tournee();
 
     public Tournee getTournee() {
         return tournee;
     }
 
-    private Tournee tournee;
+
 
     public GATSPTW(PlanLivraison planLivraison, Commande commande) {
         this.planLivraison = planLivraison;
@@ -158,7 +159,7 @@ public class GATSPTW {
             for (Map.Entry<Integer, List<Long>> entry : population.entrySet()) {
                 fitnesses[entry.getKey()] = fitness(entry.getValue());
             }
-            if (averageOf(fitnesses) > 0.999 * maxOf(fitnesses)) break;
+            if (averageOf(fitnesses) > 0.99999 * maxOf(fitnesses)) break;
 
         }
 

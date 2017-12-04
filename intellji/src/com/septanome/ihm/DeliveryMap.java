@@ -33,21 +33,7 @@ public class DeliveryMap extends JPanel  {
 
         r.putAll(sm.getPlan().getTronconsMap());
         commande=sm.getCommande();
-    }
 
-    public int getXmin(){
-        return xmin;
-    }
-
-    public int getYmin(){
-        return ymin;
-    }
-
-    public int getScale(){
-        return scale;
-    }
-
-    public void paintComponent(Graphics g){
         xmin= Integer.MAX_VALUE;
         xmax=Integer.MIN_VALUE;
         ymin=Integer.MAX_VALUE;
@@ -66,14 +52,25 @@ public class DeliveryMap extends JPanel  {
                 ymin=entry.getValue().getCoordY();
             }
         }
-
         scale = (ymax-ymin>xmax-xmin)? ymax-ymin:xmax-xmin;
+    }
 
-        System.out.println("xmin="+xmin);
-        System.out.println("ymin="+ymin);
-        System.out.println("scale="+scale);
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setStroke(new BasicStroke(3.0f));
+    public int getXmin(){
+        return xmin;
+    }
+
+    public int getYmin(){
+        return ymin;
+    }
+
+    public int getScale(){
+        return scale;
+    }
+
+    public void paintComponent(Graphics g){
+
+//        Graphics2D g2 = (Graphics2D)g;
+//        g2.setStroke(new BasicStroke(3.0f));
         for(Map.Entry<Long,Point> entry:p.entrySet()){
             g.fillOval((int)((((double)entry.getValue().getCoordX())-xmin)/scale*(screenHeigth-12)),
                     (int)((((double)entry.getValue().getCoordY())-ymin)/scale*(screenHeigth-37)), 4, 4);
@@ -87,7 +84,7 @@ public class DeliveryMap extends JPanel  {
             HashMap<Long,Troncon> h= entry.getValue();
             for(Map.Entry<Long,Troncon> e:h.entrySet()){
                 Long idDest=e.getKey();
-                g2.drawLine((int)((((double)p.get(idOri).getCoordX())-xmin)/scale*(screenHeigth-12))+5,
+                g.drawLine((int)((((double)p.get(idOri).getCoordX())-xmin)/scale*(screenHeigth-12))+5,
                         (int)((((double)p.get(idOri).getCoordY())-ymin)/scale*(screenHeigth-37))+5,
                         (int)((((double)p.get(idDest).getCoordX())-xmin)/scale*(screenHeigth-12))+5,
                         (int)((((double)p.get(idDest).getCoordY())-ymin)/scale*(screenHeigth-37))+5);

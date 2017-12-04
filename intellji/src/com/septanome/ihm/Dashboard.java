@@ -64,7 +64,6 @@ public class Dashboard extends JFrame implements ActionListener{
         myMap.setBounds(10,10,800,900);
         myMap.setBackground(Color.cyan);
 
-
         panelChooseFile.setBounds(900,10,500,380);
         panelChooseFile.setLayout(null);
         panelChooseFile.setBackground(Color.green);
@@ -222,25 +221,29 @@ public class Dashboard extends JFrame implements ActionListener{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            focusedPointNumber = 0;
-            panelGlobal.remove(myMap);
-            myMap = new DeliveryMap(serviceMetier,screenHeight-180);
-            xmin=myMap.getXmin();
-            ymin=myMap.getYmin();
-            scale=myMap.getScale();
-            myMap.setBounds(10,10,800,900);
-            myMap.setLayout(null);
-            panelGlobal.add(myMap);
-            //myMap.updateUI();
-            repaint();
+            if(serviceMetier.getTournee()!=null) {
+                focusedPointNumber = 0;
+                panelGlobal.remove(myMap);
+                myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+                myMap.setBounds(10, 10, 800, 900);
+                myMap.setLayout(null);
+                panelGlobal.add(myMap);
+                //myMap.updateUI();
+                repaint();
+                xmin = myMap.getXmin();
+                ymin = myMap.getYmin();
+                scale = myMap.getScale();
+            }
         }else if (event.getSource() == buttonNextPoint){
-            if(focusedPointNumber<serviceMetier.getCommande().getListLivraison().size()+1) {
+            if(focusedPointNumber<serviceMetier.getCommande().getListLivraison().size()-1) {
                 focusedPointNumber++;
                 focusedPointId = serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID();
+
                 Point tmpPoint = serviceMetier.getPlan().getPointsMap().get(focusedPointId);
-                panelFocusedPoint.getGraphics().fillOval((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (900 - 12)), (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (900 - 37)), 15, 15);
-                panelGlobal.add(panelFocusedPoint);
-                repaint();
+                System.out.println((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 - 12)));
+
+                panelFocusedPoint.getGraphics().fillOval((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 - 12)), (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (screenHeight-180 - 37)), 15, 15);
+                panelFocusedPoint.repaint();
                 refreshPanelPointDetail();
             }
         }else if(event.getSource()==buttonPreviousPoint){
