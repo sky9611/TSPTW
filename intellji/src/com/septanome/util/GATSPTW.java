@@ -54,13 +54,54 @@ public class GATSPTW {
         return listIdLivraisons;
     }
 
+    private boolean isFleasible(List<Long> l) {
+        for (int i=1;i<l.size();i++) {
+            if (isViolated(l,i))
+                return false;
+        }
+        return true;
+    }
+
+    private boolean isViolated(List<Long> l, int index) {
+        //long idStart = l.get(index);
+        long idDes = l.get(index);
+        //double duree = planLivraison.getCheminsMap().get(idStart).get(idDes).getLongeur()/vitesse;
+        double arrivalTime =  calculeArrivalTime(l)[index];
+        double b = livraisonsMap.get(idDes).getHeureDeFin();
+        if (arrivalTime>b)
+            return true;
+        return false;
+    }
+
+    private double[] calculeArrivalTime(List<Long> l) {
+        //System.out.println("enter calculeArrivalTime");
+        double[] arrivalTimes = new double[l.size()];
+        double[] leaveTimes = new double[l.size()];
+        arrivalTimes[0] = commande.getHeureDeDepart();
+        leaveTimes[0] = commande.getHeureDeDepart();
+        for (int i=1;i<l.size();i++) {
+            long idStart = l.get(i-1);
+            double duree = livraisonsMap.get(idStart).getDuree();
+            long idDes = l.get(i);
+            double longeur = planLivraison.getCheminsMap().get(idStart).get(idDes).getLongeur();
+            //System.out.println(idStart+"-->"+idDes+" "+longeur);
+            arrivalTimes[i] = leaveTimes[i-1] + duree + longeur/vitesse;
+            if (arrivalTimes[i]>livraisonsMap.get(idDes).getHeureDeDebut()) {
+                leaveTimes[i] = arrivalTimes[i] + duree;
+            } else {
+                leaveTimes[i] = livraisonsMap.get(idDes).getHeureDeDebut()+duree;
+            }
+        }
+        return arrivalTimes;
+    }
+
     public Tournee findSolution(int iterMax) throws ClassNotFoundException, IOException {
         initPopulation();
         int iter = 0;
         List<Long> bestOrder = new ArrayList<>();
         int bestKeepTime = 0;
         while (iter < iterMax) {
-            System.out.println("iter=" + iter);
+            //System.out.println("iter=" + iter);
             HashMap<Integer, List<Long>> newPopulation = roulette();
             int n = (int) pc * population.size();
             for (int i = 0; i < n; i = i + 2) {
@@ -100,6 +141,7 @@ public class GATSPTW {
 
         bestOrder = getBestSolution();
 //        printList(bestOrder);
+        System.out.println(isFleasible(bestOrder));
         Tournee t = new Tournee();
         List<Chemin> chemins = new ArrayList<>();
         for (
