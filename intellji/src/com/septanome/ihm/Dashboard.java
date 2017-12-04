@@ -16,7 +16,12 @@ public class Dashboard extends JFrame implements ActionListener{
     long focusedPointId;
     int focusedPointNumber=0;
 
-    JPanel myMap = new JPanel();
+    int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+    int xmin;
+    int ymin;
+    int scale;
+
+    DeliveryMap myMap = new DeliveryMap(serviceMetier,0);
     JPanel panelGlobal = new JPanel();
     JPanel panelChooseFile = new JPanel();
     JPanel panelFocusedPoint =new JPanel();
@@ -55,7 +60,6 @@ public class Dashboard extends JFrame implements ActionListener{
         this.setVisible(true);
         // Pour permettre la fermeture de la fenêtre lors de l'appui sur la croix rouge
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
         myMap.setBounds(10,10,800,900);
         myMap.setBackground(Color.cyan);
@@ -164,7 +168,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelGlobal.setBounds(0,0,1600,1000);
         panelGlobal.setLayout(null);
         panelGlobal.add(panelChooseFile);
-        panelGlobal.add(myMap);
+        //panelGlobal.add(myMap);
         panelGlobal.add(panelSelectPoint);
         panelGlobal.add(panelFocusedPoint);
         panelGlobal.add(panelPointDetail);
@@ -220,22 +224,20 @@ public class Dashboard extends JFrame implements ActionListener{
             }
             focusedPointNumber = 0;
             panelGlobal.remove(myMap);
-            myMap = new DeliveryMap(serviceMetier,900);
+            myMap = new DeliveryMap(serviceMetier,screenHeight-180);
+            xmin=myMap.getXmin();
+            ymin=myMap.getYmin();
+            scale=myMap.getScale();
             myMap.setBounds(10,10,800,900);
             myMap.setLayout(null);
             panelGlobal.add(myMap);
             //myMap.updateUI();
             repaint();
         }else if (event.getSource() == buttonNextPoint){
-            if(focusedPointNumber<serviceMetier.getCommande().getListLivraison().size()) {
+            if(focusedPointNumber<serviceMetier.getCommande().getListLivraison().size()+1) {
                 focusedPointNumber++;
                 focusedPointId = serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID();
                 Point tmpPoint = serviceMetier.getPlan().getPointsMap().get(focusedPointId);
-
-                int xmin = 119978;
-                int ymin = 171346;
-                int scale = 171308;
-
                 panelFocusedPoint.getGraphics().fillOval((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (900 - 12)), (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (900 - 37)), 15, 15);
                 panelGlobal.add(panelFocusedPoint);
                 repaint();
@@ -258,9 +260,26 @@ public class Dashboard extends JFrame implements ActionListener{
                 Livraison l = new Livraison(pointID,serviceMetier.getPlan().getPointsMap().get(pointID).getCoordX(),serviceMetier.getPlan().getPointsMap().get(pointID).getCoordY(),duration,heureDebut,heureFin);
                 serviceMetier.getCommande().getListLivraison().add(l);
 
+                serviceMetier.initPlanLivraison();
+                try {
+                    serviceMetier.calculerTournee(true);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                focusedPointNumber = 0;
+                panelGlobal.remove(myMap);
+                myMap = new DeliveryMap(serviceMetier,screenHeight-180);
+                myMap.setBounds(10,10,800,900);
+                myMap.setLayout(null);
+                panelGlobal.add(myMap);
+                //myMap.updateUI();
+                repaint();
             }catch(Exception e){
                 System.out.println("failed to add!!!");
             }
+
         }else if(event.getSource()==buttonRemovePoint){
             try{
                 Long pointID= Long.valueOf(textRemovePointID.getText());
@@ -274,10 +293,28 @@ public class Dashboard extends JFrame implements ActionListener{
                 }
                 if(!found){
                     System.out.println("Point not found!!!");
+                }else {
+                    serviceMetier.initPlanLivraison();
+                    try {
+                        serviceMetier.calculerTournee(true);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    focusedPointNumber = 0;
+                    panelGlobal.remove(myMap);
+                    myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+                    myMap.setBounds(10, 10, 800, 900);
+                    myMap.setLayout(null);
+                    panelGlobal.add(myMap);
+                    //myMap.updateUI();
+                    repaint();
                 }
             }catch (Exception e){
                 System.out.println("failed to remove!!!");
             }
+
         }else if(event.getSource()==buttonEditPlageHoraire){
             try{
                 Long pointID= Long.valueOf(textEditPointID.getText());
@@ -292,6 +329,23 @@ public class Dashboard extends JFrame implements ActionListener{
                 }
                 if(!found){
                     System.out.println("Point not found!!!");
+                }else{
+                    serviceMetier.initPlanLivraison();
+                    try {
+                        serviceMetier.calculerTournee(true);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    focusedPointNumber = 0;
+                    panelGlobal.remove(myMap);
+                    myMap = new DeliveryMap(serviceMetier,screenHeight-180);
+                    myMap.setBounds(10,10,800,900);
+                    myMap.setLayout(null);
+                    panelGlobal.add(myMap);
+                    //myMap.updateUI();
+                    repaint();
                 }
             }catch(Exception e){
                 System.out.println("failed to edit time slot!!!");
