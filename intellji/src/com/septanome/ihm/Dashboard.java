@@ -59,7 +59,7 @@ public class Dashboard extends JFrame implements ActionListener{
         // Pour rendre la fenêtre visible
         this.setVisible(true);
         // Pour permettre la fermeture de la fenêtre lors de l'appui sur la croix rouge
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         myMap.setBounds(10,10,800,900);
         myMap.setBackground(Color.cyan);
@@ -173,8 +173,6 @@ public class Dashboard extends JFrame implements ActionListener{
         panelGlobal.add(panelAddPoint);
         panelGlobal.add(panelRemovePoint);
         panelGlobal.add(panelEditPlageHoraire);
-        panelGlobal.setBackground(Color.yellow);
-
         this.setContentPane(panelGlobal);
 
     }
@@ -215,9 +213,7 @@ public class Dashboard extends JFrame implements ActionListener{
             serviceMetier.initPlanLivraison();
             try {
                 serviceMetier.calculerTournee(true);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (ClassNotFoundException | IOException e) {
                 e.printStackTrace();
             }
             if(serviceMetier.getTournee()!=null) {
@@ -243,7 +239,7 @@ public class Dashboard extends JFrame implements ActionListener{
             if(focusedPointNumber<serviceMetier.getCommande().getListLivraison().size()) {
                 focusedPointNumber++;
                 focusedPointId = serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID();
-                ;
+
                 Point tmpPoint = serviceMetier.getPlan().getPointsMap().get(focusedPointId);
                 panelFocusedPoint.setBounds((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
                 panelFocusedPoint.setBackground(Color.RED);
@@ -251,7 +247,6 @@ public class Dashboard extends JFrame implements ActionListener{
                 repaint();
                 refreshPanelPointDetail();
             }else{
-                Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "C'est deja le dernier livraison", "Message", JOptionPane.PLAIN_MESSAGE);
             }
         }else if(event.getSource()==buttonPreviousPoint){
@@ -266,7 +261,6 @@ public class Dashboard extends JFrame implements ActionListener{
                 repaint();
                 refreshPanelPointDetail();
             }else{
-                Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "C'est deja le premier livraison", "Message", JOptionPane.PLAIN_MESSAGE);
             }
         }else if(event.getSource()==buttonAddPoint){
@@ -282,26 +276,29 @@ public class Dashboard extends JFrame implements ActionListener{
                 }
                 int duration = 60*Integer.valueOf(textAddPointDuration.getText());
                 Livraison l = new Livraison(pointID,serviceMetier.getPlan().getPointsMap().get(pointID).getCoordX(),serviceMetier.getPlan().getPointsMap().get(pointID).getCoordY(),duration,heureDebut,heureFin);
-                serviceMetier.getCommande().getListLivraison().add(l);
+                serviceMetier.ajouterNouveauLivraison(l);
 
                 serviceMetier.initPlanLivraison();
                 try {
                     serviceMetier.calculerTournee(true);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (ClassNotFoundException | IOException e) {
                     e.printStackTrace();
                 }
-                focusedPointNumber = 0;
-                panelGlobal.remove(myMap);
-                myMap = new DeliveryMap(serviceMetier,screenHeight-180);
-                myMap.setBounds(10,10,800,900);
-                myMap.setLayout(null);
-                panelGlobal.add(myMap);
-                //myMap.updateUI();
-                repaint();
+                if(serviceMetier.getTournee()!=null) {
+                    focusedPointNumber = 0;
+                    panelGlobal.remove(myMap);
+                    myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+                    myMap.setBounds(10, 10, 800, 900);
+                    myMap.setLayout(null);
+                    panelGlobal.add(myMap);
+                    //myMap.updateUI();
+                    repaint();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Impossible d'ajouter ce livraison", "Message", JOptionPane.PLAIN_MESSAGE);
+                }
             }catch(Exception e){
-                System.out.println("failed to add!!!");
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(null, "Erreur pendant l'ajout", "Message", JOptionPane.PLAIN_MESSAGE);
             }
 
         }else if(event.getSource()==buttonRemovePoint){
@@ -316,14 +313,12 @@ public class Dashboard extends JFrame implements ActionListener{
                     }
                 }
                 if(!found){
-                    System.out.println("Point not found!!!");
+                    JOptionPane.showMessageDialog(null, "Veuillez verifier l'ID du point", "Message", JOptionPane.PLAIN_MESSAGE);
                 }else {
                     serviceMetier.initPlanLivraison();
                     try {
                         serviceMetier.calculerTournee(true);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
                     focusedPointNumber = 0;
@@ -336,7 +331,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     repaint();
                 }
             }catch (Exception e){
-                System.out.println("failed to remove!!!");
+                JOptionPane.showMessageDialog(null, "Erreur pendant la suppression", "Message", JOptionPane.PLAIN_MESSAGE);
             }
 
         }else if(event.getSource()==buttonEditPlageHoraire){
@@ -352,14 +347,12 @@ public class Dashboard extends JFrame implements ActionListener{
                     }
                 }
                 if(!found){
-                    System.out.println("Point not found!!!");
+                    JOptionPane.showMessageDialog(null, "Veuillez verifier l'ID du point", "Message", JOptionPane.PLAIN_MESSAGE);
                 }else{
                     serviceMetier.initPlanLivraison();
                     try {
                         serviceMetier.calculerTournee(true);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
                     focusedPointNumber = 0;
@@ -372,12 +365,12 @@ public class Dashboard extends JFrame implements ActionListener{
                     repaint();
                 }
             }catch(Exception e){
-                System.out.println("failed to edit time slot!!!");
+                JOptionPane.showMessageDialog(null, "Erreur pendant la modification", "Message", JOptionPane.PLAIN_MESSAGE);
             }
         }
 
     }
-    public void refreshPanelPointDetail(){
+    private void refreshPanelPointDetail(){
         if(focusedPointNumber==0) {
             labelPointDetail.setText("<html>Entrepot:<br>Coordonne X:" + serviceMetier.getCommande().getEntrepot().getCoordX() + "<br>" +
                     "Coordonne Y:" + serviceMetier.getCommande().getEntrepot().getCoordY() + "<br>" +

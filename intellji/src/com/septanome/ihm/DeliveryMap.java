@@ -69,8 +69,7 @@ public class DeliveryMap extends JPanel  {
 
     public void paintComponent(Graphics g){
 
-//        Graphics2D g2 = (Graphics2D)g;
-//        g2.setStroke(new BasicStroke(3.0f));
+
         for(Map.Entry<Long,Point> entry:p.entrySet()){
             g.fillOval((int)((((double)entry.getValue().getCoordX())-xmin)/scale*(screenHeigth-12)),
                     (int)((((double)entry.getValue().getCoordY())-ymin)/scale*(screenHeigth-37)), 4, 4);
@@ -90,8 +89,9 @@ public class DeliveryMap extends JPanel  {
                         (int)((((double)p.get(idDest).getCoordY())-ymin)/scale*(screenHeigth-37))+5);
             }
         }
-
-        g.setColor(Color.RED);
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setStroke(new BasicStroke(2.0f));
+        g2.setColor(Color.RED);
         System.out.println(sm.getTournee());
 
         for(Chemin c : sm.getTournee().getChemins()){
@@ -102,7 +102,7 @@ public class DeliveryMap extends JPanel  {
                 //System.out.println(startY);
                 double endX = p.get(tr.getDestinationID()).getCoordX();
                 double endY = p.get(tr.getDestinationID()).getCoordY();
-                g.drawLine((int)(((startX-xmin)/scale*(screenHeigth-12)))+5,
+                g2.drawLine((int)(((startX-xmin)/scale*(screenHeigth-12)))+5,
                         (int)((startY-ymin)/scale*(screenHeigth-37))+5,
                         (int)((endX-xmin)/scale*(screenHeigth-12))+5,
                         (int)((endY-ymin)/scale*(screenHeigth-37))+5);
@@ -112,7 +112,7 @@ public class DeliveryMap extends JPanel  {
         int CoordX =(int)((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth-12));
         int CoordY = (int)((((double)commande.getEntrepot().getCoordY())-ymin)/scale*(screenHeigth-37));
         g.fillOval(CoordX, CoordY, 8, 8);
-        g.setColor(Color.magenta);
+        g.setColor(Color.BLUE);
 
         for(Livraison l:commande.getListLivraison()){
             CoordX =(int)((((double)l.getCoordX())-xmin)/scale*(screenHeigth-12));
