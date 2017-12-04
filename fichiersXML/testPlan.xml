@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<reseau>
+	<noeud id="0" x="15427" y="27866"/>
+	<noeud id="1" x="15602" y="27911"/>
+	<noeud id="2" x="16034" y="27050"/>
+	<noeud id="3" x="23356" y="20091"/>
+	<noeud id="4" x="22640" y="19760"/>
+	<noeud id="5" x="23627" y="30695"/>
+	<noeud id="6" x="26344" y="35130"/>
+	<noeud id="7" x="17848" y="22858"/>
+	<noeud id="8" x="17927" y="21567"/>
+	<troncon destination="3" longueur="30.0" nomRue="Rue Viala" origine="0"/>
+	<troncon destination="4" longueur="30.0" nomRue="Avenue Rockefeller" origine="0"/>
+	<troncon destination="7" longueur="7.0" nomRue="Rue Montvert" origine="0"/>
+	<troncon destination="8" longueur="116.0" nomRue="Impasse Belloeuf" origine="0"/>
+	<troncon destination="3" longueur="29.0" nomRue="Rue du Dauphiné" origine="1"/>
+	<troncon destination="4" longueur="63.0" nomRue="Rue du Dauphiné" origine="1"/>
+	<troncon destination="5" longueur="17.0" nomRue="Avenue Lacassagne" origine="1"/>
+	<troncon destination="6" longueur="44.0" nomRue="Rue Bara" origine="1"/>
+	<troncon destination="5" longueur="86.0" nomRue="" origine="2"/>
+	<troncon destination="6" longueur="354.0" nomRue="Avenue Rockefeller" origine="2"/>
+	<troncon destination="7" longueur="7.0" nomRue="Rue Nungesser et Coli" origine="2"/>
+	<troncon destination="8" longueur="116.0" nomRue="" origine="2"/>
+	<troncon destination="0" longueur="45.0" nomRue="Rue Trarieux" origine="3"/>
+	<troncon destination="1" longueur="116.0" nomRue="" origine="3"/>
+	<troncon destination="0" longueur="104.0" nomRue="Cours Albert Thomas" origine="4"/>
+	<troncon destination="1" longueur="33.0" nomRue="Rue du Docteur Bonhomme" origine="4"/>
+	<troncon destination="1" longueur="32.0" nomRue="Avenue des Frères Lumière" origine="5"/>
+	<troncon destination="2" longueur="79.0" nomRue="Rue du Docteur Bonhomme" origine="5"/>
+	<troncon destination="1" longueur="203.0" nomRue="Rue Maryse Bastié" origine="6"/>
+	<troncon destination="2" longueur="70.0" nomRue="Avenue des Frères Lumière" origine="6"/>
+	<troncon destination="0" longueur="108.0" nomRue="Rue Maryse Bastié" origine="7"/>
+	<troncon destination="2" longueur="187.0" nomRue="Cours Albert Thomas" origine="7"/>
+	<troncon destination="0" longueur="62.0" nomRue="Rue Charles Richard" origine="8"/>
+	<troncon destination="2" longueur="84.0" nomRue="Place du Château" origine="8"/>
+</reseau>
