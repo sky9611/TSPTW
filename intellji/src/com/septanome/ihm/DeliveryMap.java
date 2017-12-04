@@ -92,7 +92,7 @@ public class DeliveryMap extends JPanel  {
         Graphics2D g2 = (Graphics2D)g;
         g2.setStroke(new BasicStroke(2.0f));
         g2.setColor(Color.RED);
-        System.out.println(sm.getTournee());
+        //System.out.println(sm.getTournee());
 
         for(Chemin c : sm.getTournee().getChemins()){
             for (Troncon tr:c.getTroncons()){

@@ -246,7 +246,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 focusedPointNumber = 0;
                 panelGlobal.remove(myMap);
                 myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
-                myMap.setBounds(10, 10, 900, 900);
+                myMap.setBounds(10,10,900,screenHeight-180);
                 myMap.setLayout(null);
                 panelGlobal.add(myMap);
                 repaint();
@@ -310,6 +310,10 @@ public class Dashboard extends JFrame implements ActionListener{
                 if(!textAddPointHeureFin.getText().equals("")) {
                     heureFin = 3600 * Integer.valueOf(textAddPointHeureFin.getText().substring(0, 2)) + 60 * Integer.valueOf(textAddPointHeureFin.getText().substring(3, 5)) + Integer.valueOf(textAddPointHeureFin.getText().substring(6, 8));
                 }
+                if(heureDebut>heureFin){
+                    JOptionPane.showMessageDialog(null, "Le debut de la plage horaire doit etre inferieur a la fin", "Message", JOptionPane.PLAIN_MESSAGE);
+                    return;
+                }
                 Livraison l = new Livraison(pointID,serviceMetier.getPlan().getPointsMap().get(pointID).getCoordX(),serviceMetier.getPlan().getPointsMap().get(pointID).getCoordY(),duration,heureDebut,heureFin);
                 ServiceMetier smtmp = serviceMetier;
                 serviceMetier.ajouterNouveauLivraison(l);
@@ -323,7 +327,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     focusedPointNumber = 0;
                     panelGlobal.remove(myMap);
                     myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
-                    myMap.setBounds(10, 10, 900, 900);
+                    myMap.setBounds(10,10,900,screenHeight-180);
                     myMap.setLayout(null);
                     panelGlobal.add(myMap);
                     panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
@@ -363,7 +367,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     focusedPointNumber = 0;
                     panelGlobal.remove(myMap);
                     myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
-                    myMap.setBounds(10, 10, 900, 900);
+                    myMap.setBounds(10,10,900,screenHeight-180);
                     myMap.setLayout(null);
                     panelGlobal.add(myMap);
                     panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
@@ -411,7 +415,7 @@ public class Dashboard extends JFrame implements ActionListener{
                         focusedPointNumber = 0;
                         panelGlobal.remove(myMap);
                         myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
-                        myMap.setBounds(10, 10, 900, 900);
+                        myMap.setBounds(10,10,900,screenHeight-180);
                         myMap.setLayout(null);
                         panelGlobal.add(myMap);
                         panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
@@ -467,8 +471,6 @@ public class Dashboard extends JFrame implements ActionListener{
     public static void main(String[] args){
         ServiceMetier sm = new ServiceMetier();
         Dashboard myDashboard = new Dashboard(sm);
-        String a ="12:00:56";
-        System.out.println(a.substring(3,5));
     }
 }
 

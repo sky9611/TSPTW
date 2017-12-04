@@ -369,7 +369,7 @@ public class ServiceMetier {
         List<Livraison> newListLivraison = new ArrayList();
         double [] arrivalTime = calculerArrivalTime();
         HashMap<Long,Livraison> pl = planLivraison.getLivraisonsMap();
-        for(int i =0;i<listChemin.size()-2;i++){
+        for(int i =0;i<listChemin.size()-1;i++){
             Long destinationID = listChemin.get(i).getDestinationPointID();
             Livraison l = pl.get(destinationID);
             if(l.getHeureDeDebut()==0){
