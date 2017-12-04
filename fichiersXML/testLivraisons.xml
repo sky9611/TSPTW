@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Livraisons>
+<Entrepot x="216209" y="248772" h="36000"/>
+<Livraison x="217384" y="255229" d="2400" hd="36000" hf="64800"/>
+<Livraison x="217420" y="254944" d="3600" hd="36000" hf="64800"/>
+<Livraison x="216570" y="257291" d="3600" hd="36000" hf="64800"/>
+<Livraison x="216592" y="258528" d="3600" hd="36000" hf="64800"/>
+<Livraison x="197615" y="228974" d="3600" hd="36000" hf="64800"/>
+<Livraison x="210946" y="306516" d="3600" hd="36000" hf="64800"/>
+<Livraison x="217638" y="255147" d="3600" hd="36000" hf="64800"/>
+</Livraisons>
