@@ -99,9 +99,8 @@ public class Dashboard extends JFrame implements ActionListener{
         panelSelectPoint.add(buttonNextPoint);
 
 
-        panelFocusedPoint.setBounds(myMap.getBounds());
+        panelFocusedPoint.setBounds(0,0,0,0);
         panelFocusedPoint.setLayout(null);
-        panelFocusedPoint.setOpaque(false);
 
         panelPointDetail.setBounds(900,400,500,200);
         panelPointDetail.setLayout(null);
@@ -233,21 +232,43 @@ public class Dashboard extends JFrame implements ActionListener{
                 xmin = myMap.getXmin();
                 ymin = myMap.getYmin();
                 scale = myMap.getScale();
+
+                panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+                panelFocusedPoint.setBackground(Color.GREEN);
+                panelGlobal.add(panelFocusedPoint);
+                repaint();
+                refreshPanelPointDetail();
             }
         }else if (event.getSource() == buttonNextPoint){
-            if(focusedPointNumber<serviceMetier.getCommande().getListLivraison().size()-1) {
+            if(focusedPointNumber<serviceMetier.getCommande().getListLivraison().size()) {
                 focusedPointNumber++;
+                focusedPointId = serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID();
+                ;
+                Point tmpPoint = serviceMetier.getPlan().getPointsMap().get(focusedPointId);
+                panelFocusedPoint.setBounds((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+                panelFocusedPoint.setBackground(Color.RED);
+                panelGlobal.add(panelFocusedPoint);
+                repaint();
+                refreshPanelPointDetail();
+            }else{
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(null, "C'est deja le dernier livraison", "Message", JOptionPane.PLAIN_MESSAGE);
+            }
+        }else if(event.getSource()==buttonPreviousPoint){
+            if(focusedPointNumber>0) {
+                focusedPointNumber--;
                 focusedPointId = serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID();
 
                 Point tmpPoint = serviceMetier.getPlan().getPointsMap().get(focusedPointId);
-                System.out.println((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 - 12)));
-
-                panelFocusedPoint.getGraphics().fillOval((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 - 12)), (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (screenHeight-180 - 37)), 15, 15);
-                panelFocusedPoint.repaint();
+                panelFocusedPoint.setBounds((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+                panelFocusedPoint.setBackground(Color.RED);
+                panelGlobal.add(panelFocusedPoint);
+                repaint();
                 refreshPanelPointDetail();
+            }else{
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(null, "C'est deja le premier livraison", "Message", JOptionPane.PLAIN_MESSAGE);
             }
-        }else if(event.getSource()==buttonPreviousPoint){
-            //to do
         }else if(event.getSource()==buttonAddPoint){
             try{
                 Long pointID= Long.valueOf(textAddPointId.getText());
@@ -357,30 +378,37 @@ public class Dashboard extends JFrame implements ActionListener{
 
     }
     public void refreshPanelPointDetail(){
-        String heureDeDebut = "N/A";
-        String heureDeFin = "N/A";
-        String duree = "N/A";
-        String arrivee = null;
-        for(Livraison l:serviceMetier.getCommande().getListLivraison()){
-            if(l.getId() == serviceMetier.getPlan().getPointsMap().get(focusedPointId).getId()){
-                int d=l.getHeureDeDebut();
-                int f=l.getHeureDeFin();
-                if(d >= 0) {
-                    heureDeDebut = String.valueOf((d - d % 3600) / 3600) + ":" + String.valueOf(((d - d % 60) % 3600) / 60) + ":" + String.valueOf(d % 60);
+        if(focusedPointNumber==0) {
+            labelPointDetail.setText("<html>Entrepot:<br>Coordonne X:" + serviceMetier.getCommande().getEntrepot().getCoordX() + "<br>" +
+                    "Coordonne Y:" + serviceMetier.getCommande().getEntrepot().getCoordY() + "<br>" +
+                    "Heure de depart:" + serviceMetier.getCommande().getHeureDeDepart() + "</html>");
+            labelPointDetail.repaint();
+        }else{
+            String heureDeDebut = "N/A";
+            String heureDeFin = "N/A";
+            String duree = "N/A";
+            String arrivee = null;
+            for (Livraison l : serviceMetier.getCommande().getListLivraison()) {
+                if (l.getId() == serviceMetier.getPlan().getPointsMap().get(focusedPointId).getId()) {
+                    int d = l.getHeureDeDebut();
+                    int f = l.getHeureDeFin();
+                    if (d >= 0) {
+                        heureDeDebut = String.valueOf((d - d % 3600) / 3600) + ":" + String.valueOf(((d - d % 60) % 3600) / 60) + ":" + String.valueOf(d % 60);
+                    }
+                    if (f <= 3600 * 24 && f != -1) {
+                        heureDeFin = String.valueOf((f - f % 3600) / 3600) + ":" + String.valueOf(((f - f % 60) % 3600) / 60) + ":" + String.valueOf(f % 60);
+                    }
+                    duree = String.valueOf(l.getDuree());
                 }
-                if (f<=3600*24 && f!=-1) {
-                    heureDeFin = String.valueOf((f - f % 3600) / 3600) + ":" + String.valueOf(((f - f % 60) % 3600) / 60) + ":" + String.valueOf(f % 60);
-                }
-                duree = String.valueOf(l.getDuree());
             }
+            labelPointDetail.setText("<html>Coordonne X:" + serviceMetier.getPlan().getPointsMap().get(focusedPointId).getCoordX() + "<br>" +
+                    "Coordonne Y:" + serviceMetier.getPlan().getPointsMap().get(focusedPointId).getCoordY() + "<br>" +
+                    "Heure de debut:" + heureDeDebut + "<br>" +
+                    "Heure de fin:" + heureDeFin + "<br>" +
+                    "Duree:" + duree + "<br>" +
+                    "Arrivee:" + "</html>");
+            labelPointDetail.repaint();
         }
-        labelPointDetail.setText("<html>Coordonne X:"+serviceMetier.getPlan().getPointsMap().get(focusedPointId).getCoordX()+"<br>" +
-                                            "Coordonne Y:"+serviceMetier.getPlan().getPointsMap().get(focusedPointId).getCoordY()+"<br>" +
-                                            "Heure de debut:"+heureDeDebut+"<br>"+
-                                            "Heure de fin:"+heureDeFin+"<br>"+
-                                            "Duree:"+duree+"<br>"+
-                                            "Arrivee:"+"</html>");
-        labelPointDetail.repaint();
     }
 
     public static void main(String[] args){
