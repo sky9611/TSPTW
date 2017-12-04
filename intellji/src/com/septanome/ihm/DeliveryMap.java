@@ -34,7 +34,7 @@ public class DeliveryMap extends JPanel  {
         r.putAll(sm.getPlan().getTronconsMap());
         commande=sm.getCommande();
 
-        xmin= Integer.MAX_VALUE;
+        xmin=Integer.MAX_VALUE;
         xmax=Integer.MIN_VALUE;
         ymin=Integer.MAX_VALUE;
         ymax=Integer.MIN_VALUE;

@@ -366,28 +366,28 @@ public class ServiceMetier {
     public void ajouterNouveauLivraison(Livraison livraison){
         List <Chemin> listChemin = tournee.getChemins();
         commande.getListLivraison().clear();
-        List<Livraison> newListLivraison = null;
+        List<Livraison> newListLivraison = new ArrayList();
         double [] arrivalTime = calculerArrivalTime();
         HashMap<Long,Livraison> pl = planLivraison.getLivraisonsMap();
         for(int i =0;i<listChemin.size()-2;i++){
             Long destinationID = listChemin.get(i).getDestinationPointID();
-            Livraison l = pl.get(i);
-            if(pl.get(i).getHeureDeDebut()==0){
+            Livraison l = pl.get(destinationID);
+            if(l.getHeureDeDebut()==0){
                 int hd = (int)arrivalTime[i];
-                int hf = (int)arrivalTime[i]+3600;//plage horaire = [t, t+1h]
+                int hf = (int)arrivalTime[i]+36000;//plage horaire = [t, t+1h]
                 Livraison temp = new Livraison(l.getId(),l.getCoordX(),l.getCoordY(),hd,l.getDuree(),hf);
                 newListLivraison.add(temp);
             } else {
                 newListLivraison.add(l);
             }
         }
-        commande.addLivraison(livraison);
         commande.setLivraisons(newListLivraison);
+        commande.addLivraison(livraison);
     }
 
     public double[] calculerArrivalTime(){
-        List <Chemin> chemins = tournee.getChemins();
-        List <Long> l = null;
+        List<Chemin> chemins = tournee.getChemins();
+        List<Long> l = new ArrayList<Long>();
         for(int i=0;i<chemins.size()-1;i++){
             l.add(chemins.get(i).getDestinationPointID());
         }

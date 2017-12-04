@@ -15,8 +15,8 @@ public class Livraison extends Point {
     public Livraison(long id, int coordX, int coordY, int duree) {
         super(id, coordX, coordY);
         this.duree = duree;
-        this.heureDeDebut = -1;
-        this.heureDeFin = -1;
+        this.heureDeDebut = 0;
+        this.heureDeFin = Integer.MAX_VALUE;
     }
 
     public int getDuree() {

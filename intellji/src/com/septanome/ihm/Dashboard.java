@@ -264,27 +264,30 @@ public class Dashboard extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "C'est deja le premier livraison", "Message", JOptionPane.PLAIN_MESSAGE);
             }
         }else if(event.getSource()==buttonAddPoint){
-            try{
+//            try{
                 Long pointID= Long.valueOf(textAddPointId.getText());
-                int heureDebut = -1;
-                int heureFin = -1;
+                int heureDebut = 0;
+                int heureFin = Integer.MAX_VALUE;
+
                 if(!textAddPointHeureDebut.getText().equals("")) {
                     heureDebut = 3600 * Integer.valueOf(textAddPointHeureDebut.getText().substring(0, 1)) + 60 * Integer.valueOf(textAddPointHeureDebut.getText().substring(2, 3)) + Integer.valueOf(textAddPointHeureDebut.getText().substring(5, 6));
                 }
+
                 if(!textAddPointHeureFin.getText().equals("")) {
                     heureFin = 3600 * Integer.valueOf(textAddPointHeureFin.getText().substring(0, 1)) + 60 * Integer.valueOf(textAddPointHeureFin.getText().substring(2, 3)) + Integer.valueOf(textAddPointHeureFin.getText().substring(5, 6));
                 }
+
                 int duration = 60*Integer.valueOf(textAddPointDuration.getText());
                 Livraison l = new Livraison(pointID,serviceMetier.getPlan().getPointsMap().get(pointID).getCoordX(),serviceMetier.getPlan().getPointsMap().get(pointID).getCoordY(),duration,heureDebut,heureFin);
                 serviceMetier.ajouterNouveauLivraison(l);
-
                 serviceMetier.initPlanLivraison();
+
                 try {
                     serviceMetier.calculerTournee(true);
                 } catch (ClassNotFoundException | IOException e) {
                     e.printStackTrace();
                 }
-                if(serviceMetier.getTournee()!=null) {
+                if(serviceMetier.getTournee()!=null){
                     focusedPointNumber = 0;
                     panelGlobal.remove(myMap);
                     myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
@@ -296,10 +299,10 @@ public class Dashboard extends JFrame implements ActionListener{
                 }else{
                     JOptionPane.showMessageDialog(null, "Impossible d'ajouter ce livraison", "Message", JOptionPane.PLAIN_MESSAGE);
                 }
-            }catch(Exception e){
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Erreur pendant l'ajout", "Message", JOptionPane.PLAIN_MESSAGE);
-            }
+//            }catch(Exception e){
+//                Toolkit.getDefaultToolkit().beep();
+//                JOptionPane.showMessageDialog(null, "Erreur pendant l'ajout", "Message", JOptionPane.PLAIN_MESSAGE);
+//            }
 
         }else if(event.getSource()==buttonRemovePoint){
             try{
