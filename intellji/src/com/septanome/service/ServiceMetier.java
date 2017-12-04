@@ -362,5 +362,58 @@ public class ServiceMetier {
         //System.out.println(tournee.getChemins());
         return tournee;
     }
+
+    public void ajouterNouveauLivraison(Livraison livraison){
+        List <Chemin> listChemin = tournee.getChemins();
+        commande.getListLivraison().clear();
+        List<Livraison> newListLivraison = null;
+        double [] arrivalTime = calculerArrivalTime();
+        HashMap<Long,Livraison> pl = planLivraison.getLivraisonsMap();
+        for(int i =0;i<listChemin.size()-2;i++){
+            Long destinationID = listChemin.get(i).getDestinationPointID();
+            Livraison l = pl.get(i);
+            if(pl.get(i).getHeureDeDebut()==0){
+                int hd = (int)arrivalTime[i];
+                int hf = (int)arrivalTime[i]+3600;//plage horaire = [t, t+1h]
+                Livraison temp = new Livraison(l.getId(),l.getCoordX(),l.getCoordY(),hd,l.getDuree(),hf);
+                newListLivraison.add(temp);
+            } else {
+                newListLivraison.add(l);
+            }
+        }
+        commande.addLivraison(livraison);
+        commande.setLivraisons(newListLivraison);
+    }
+
+    public double[] calculerArrivalTime(){
+        List <Chemin> chemins = tournee.getChemins();
+        List <Long> l = null;
+        for(int i=0;i<chemins.size()-1;i++){
+            l.add(chemins.get(i).getDestinationPointID());
+        }
+        return calculeArrivalTime(l);
+    }
+    public double[] calculeArrivalTime(List<Long> l) {
+        //System.out.println("enter calculeArrivalTime");
+        double[] arrivalTimes = new double[l.size()];
+        double[] leaveTimes = new double[l.size()];
+        arrivalTimes[0] = commande.getHeureDeDepart();
+        leaveTimes[0] = commande.getHeureDeDepart();
+        HashMap<Long,Livraison> pl = planLivraison.getLivraisonsMap();
+        for (int i=1;i<l.size();i++) {
+            long idStart = l.get(i-1);
+            double duree = pl.get(idStart).getDuree();
+            long idDes = l.get(i);
+            double longeur = planLivraison.getCheminsMap().get(idStart).get(idDes).getLongeur();
+            //System.out.println(idStart+"-->"+idDes+" "+longeur);
+            arrivalTimes[i] = leaveTimes[i-1] + duree + longeur/vitesse;
+            if (arrivalTimes[i]>pl.get(idDes).getHeureDeDebut()) {
+                leaveTimes[i] = arrivalTimes[i] + duree;
+            } else {
+                leaveTimes[i] = pl.get(idDes).getHeureDeDebut()+duree;
+            }
+        }
+        return arrivalTimes;
+    }
 }
 

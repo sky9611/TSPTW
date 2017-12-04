@@ -14,7 +14,7 @@ public class Test {
 
         ServiceMetier sm = new ServiceMetier();
         sm.initPlan("fichiersXML/planLyonGrand.xml");
-        sm.initCommande("fichiersXML/DLgrand20TW.xml");
+        sm.initCommande("fichiersXML/DLgrand10TW2.xml");
         sm.initPlanLivraison();
         sm.calculerTournee(true);
         System.out.println("Test output:");
