@@ -264,7 +264,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "C'est deja le premier livraison", "Message", JOptionPane.PLAIN_MESSAGE);
             }
         }else if(event.getSource()==buttonAddPoint){
-//            try{
+            try{
                 Long pointID= Long.valueOf(textAddPointId.getText());
                 int heureDebut = 0;
                 int heureFin = Integer.MAX_VALUE;
@@ -299,10 +299,10 @@ public class Dashboard extends JFrame implements ActionListener{
                 }else{
                     JOptionPane.showMessageDialog(null, "Impossible d'ajouter ce livraison", "Message", JOptionPane.PLAIN_MESSAGE);
                 }
-//            }catch(Exception e){
-//                Toolkit.getDefaultToolkit().beep();
-//                JOptionPane.showMessageDialog(null, "Erreur pendant l'ajout", "Message", JOptionPane.PLAIN_MESSAGE);
-//            }
+            }catch(Exception e){
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(null, "Erreur pendant l'ajout", "Message", JOptionPane.PLAIN_MESSAGE);
+            }
 
         }else if(event.getSource()==buttonRemovePoint){
             try{
