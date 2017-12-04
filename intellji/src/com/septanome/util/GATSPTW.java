@@ -131,11 +131,11 @@ public class GATSPTW {
 //            if (bestKeepTime > 8) break;
 
             iter++;
-//            double[] fitnesses = new double[population.size()];
-//            for (Map.Entry<Integer, List<Long>> entry : population.entrySet()) {
-//                fitnesses[entry.getKey()] = fitness(entry.getValue());
-//            }
-//            if (averageOf(fitnesses) > 0.98 * maxOf(fitnesses)) break;
+            double[] fitnesses = new double[population.size()];
+            for (Map.Entry<Integer, List<Long>> entry : population.entrySet()) {
+                fitnesses[entry.getKey()] = fitness(entry.getValue());
+            }
+            if (averageOf(fitnesses) > 0.999 * maxOf(fitnesses)) break;
 
         }
 
