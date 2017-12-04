@@ -261,7 +261,8 @@ public class ServiceMetier {
 //            TSPTW tsptw = new TSPTW(planLivraison, commande);
 //            tournee = tsptw.findSolution(20);
             GATSPTW ga = new GATSPTW(planLivraison, commande);
-            tournee = ga.findSolution(1000);
+            if(ga.findSolution(1000))tournee = ga.getTournee();
+            else tournee = null;
         } else {
             int tpsLimite = 1000;
             HashMap<Long, HashMap<Long, Chemin>> cheminsMap = planLivraison.getCheminsMap();

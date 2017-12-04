@@ -21,6 +21,12 @@ public class GATSPTW {
     private int M = 1000;
     private int OBC_number;
 
+    public Tournee getTournee() {
+        return tournee;
+    }
+
+    private Tournee tournee;
+
     public GATSPTW(PlanLivraison planLivraison, Commande commande) {
         this.planLivraison = planLivraison;
         this.commande = commande;
@@ -95,7 +101,24 @@ public class GATSPTW {
         return arrivalTimes;
     }
 
-    public Tournee findSolution(int iterMax) throws ClassNotFoundException, IOException {
+    public double Cout(List<Long> l) {
+        int length = l.size();
+        double[] arrivalTimes = calculeArrivalTime(l);
+        double lastArrivalTime = arrivalTimes[length-1];
+        double lastServiceTime = livraisonsMap.get(l.get(l.size()-1)).getDuree();
+        long lastLivraisonID = l.get(length-1);
+        double lastLeavingTime;
+        if (lastArrivalTime>livraisonsMap.get(lastLivraisonID).getHeureDeDebut()) {
+            lastLeavingTime = lastArrivalTime + lastServiceTime;
+        } else {
+            lastLeavingTime = livraisonsMap.get(lastLivraisonID).getHeureDeDebut()+lastServiceTime;
+        }
+        Chemin lastChemin = planLivraison.getCheminsMap().get(l.get(length-1)).get(l.get(0));
+
+        return lastLeavingTime+lastChemin.getLongeur()/vitesse;
+    }
+
+    public boolean findSolution(int iterMax) throws ClassNotFoundException, IOException {
         initPopulation();
         int iter = 0;
         List<Long> bestOrder = new ArrayList<>();
@@ -141,8 +164,9 @@ public class GATSPTW {
 
         bestOrder = getBestSolution();
 //        printList(bestOrder);
-        System.out.println(isFleasible(bestOrder));
-        Tournee t = new Tournee();
+        //System.out.println(isFleasible(bestOrder));
+        System.out.println(Cout(bestOrder));
+        //Tournee t = new Tournee();
         List<Chemin> chemins = new ArrayList<>();
         for (
                 int j = 1; j < bestOrder.size(); j++)
@@ -154,8 +178,8 @@ public class GATSPTW {
 
         Chemin lastChemin = planLivraison.getCheminsMap().get(bestOrder.get(bestOrder.size() - 1)).get(idEntrepot);
         chemins.add(lastChemin);
-        t.setChemins(chemins);
-        return t;
+        tournee.setChemins(chemins);
+        return isFleasible(bestOrder);
     }
 
     private void initPopulation() throws IOException, ClassNotFoundException {
