@@ -1,9 +1,20 @@
 package com.septanome.model;
 
-public class Livraison extends Point {
+import java.io.Serializable;
+
+public class Livraison extends Point{
     private int heureDeDebut;
     private int heureDeFin;
     private int duree;
+
+    public Livraison(Livraison l){
+        this.id=l.getId();
+        this.coordX = l.getCoordX();
+        this.coordY = l.getCoordY();
+        this.heureDeDebut = l.getHeureDeDebut();
+        this.heureDeFin = l.getHeureDeFin();
+        this.duree = l.getDuree();
+    }
 
     public Livraison(long id, int coordX, int coordY, int duree, int heureDeDebut, int heureDeFin) {
         super(id, coordX, coordY);

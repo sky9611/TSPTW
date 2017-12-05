@@ -1,9 +1,10 @@
 package com.septanome.ihm;
 
+import com.septanome.model.Commande;
 import com.septanome.model.Livraison;
 import com.septanome.model.Point;
 import com.septanome.service.ServiceMetier;
-import jdk.nashorn.internal.runtime.ECMAException;
+import com.septanome.util.UtilXML;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -11,11 +12,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Dashboard extends JFrame implements ActionListener{
     ServiceMetier serviceMetier = new ServiceMetier();
     long focusedPointId;
     int focusedPointNumber=0;
+    Commande commandeForUndo;
+    Commande commandeForRedo;
 
     int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
     int xmin;
@@ -42,9 +46,10 @@ public class Dashboard extends JFrame implements ActionListener{
     JButton buttonEditPlageHoraire = new JButton("Valider");
     JButton buttonUndo = new JButton("Undo");
     JButton buttonRedo = new JButton("Redo");
+    JButton buttonGenerateFile = new JButton("Generer un fichier");
     JLabel labelPointDetail = new JLabel("");
-    JTextField textImportMapFile=new JTextField("D:\\My Documents\\Intellji Program\\TSPTW\\intellji\\fichiersXML\\planLyonGrand.xml");
-    JTextField textImportCommandFile=new JTextField("D:\\My Documents\\Intellji Program\\TSPTW\\intellji\\fichiersXML\\DLgrand10TW2.xml");
+    JTextField textImportMapFile=new JTextField("D:\\My Documents\\Intellji Program\\TSPTW\\fichiersXML\\planLyonGrand.xml");
+    JTextField textImportCommandFile=new JTextField("D:\\My Documents\\Intellji Program\\TSPTW\\fichiersXML\\DLgrand20TW.xml");
     JTextField textAddPointId = new JTextField();
     JTextField textAddPointHeureDebut = new JTextField();
     JTextField textAddPointHeureFin = new JTextField();
@@ -54,7 +59,7 @@ public class Dashboard extends JFrame implements ActionListener{
     JTextField textEditPointHeureDebut = new JTextField();
     JTextField textEditPointHeureFin = new JTextField();
 
-    public Dashboard(ServiceMetier sm){
+    public Dashboard(ServiceMetier serviceMetier){
         this.setTitle("IHM Courbe - Selection ");
         this.setLayout(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -91,18 +96,16 @@ public class Dashboard extends JFrame implements ActionListener{
         panelChooseFile.add(labelImportMap);
         panelChooseFile.add(labelImportCommand);
 
-
-        panelSelectPoint.setBounds(10,920,700,70);
+        panelSelectPoint.setBounds(10,screenHeight-160,700,70);
         panelSelectPoint.setLayout(null);
         panelSelectPoint.setBackground(Color.blue);
         buttonPreviousPoint.addActionListener(this);
         buttonPreviousPoint.setBounds(10,10,100,50);
         buttonNextPoint.addActionListener(this);
-        buttonNextPoint.setBounds(600,10,100,50);
+        buttonNextPoint.setBounds(panelSelectPoint.getWidth()-110,10,100,50);
         panelSelectPoint.add(buttonPreviousPoint);
         panelSelectPoint.add(buttonNextPoint);
         panelSelectPoint.setVisible(false);
-
 
         panelFocusedPoint.setBounds(0,0,0,0);
         panelFocusedPoint.setLayout(null);
@@ -181,9 +184,19 @@ public class Dashboard extends JFrame implements ActionListener{
         panelEditPlageHoraire.add(buttonEditPlageHoraire);
         panelEditPlageHoraire.setVisible(false);
 
-        panelUndo.setBounds(900,920,500,70);
+        panelUndo.setBounds(900,screenHeight-160,500,70);
+        panelUndo.setLayout(null);
+        buttonUndo.setBounds(10,10,100,50);
+        buttonRedo.setBounds(120,10,100,50);
+        buttonGenerateFile.setBounds(panelUndo.getWidth()-110,10,150,50);
+        buttonUndo.setVisible(false);
+        buttonRedo.setVisible(false);
+        buttonUndo.addActionListener(this);
+        buttonRedo.addActionListener(this);
+        buttonGenerateFile.addActionListener(this);
         panelUndo.add(buttonUndo);
         panelUndo.add(buttonRedo);
+        panelUndo.add(buttonGenerateFile);
 
         panelGlobal.setBounds(0,0,1600,900);
         panelGlobal.setLayout(null);
@@ -194,8 +207,9 @@ public class Dashboard extends JFrame implements ActionListener{
         panelGlobal.add(panelAddPoint);
         panelGlobal.add(panelRemovePoint);
         panelGlobal.add(panelEditPlageHoraire);
-        this.setContentPane(panelGlobal);
+        panelGlobal.add(panelUndo);
 
+        this.setContentPane(panelGlobal);
     }
 
 
@@ -233,8 +247,10 @@ public class Dashboard extends JFrame implements ActionListener{
                 serviceMetier.initPlan(plan);
                 serviceMetier.initCommande(commande);
                 serviceMetier.initPlanLivraison();
+                commandeForUndo = new Commande(serviceMetier.getCommande());
             }catch (Exception e){
                 JOptionPane.showMessageDialog(null, "Veuillez verifier les fichiers", "Message", JOptionPane.PLAIN_MESSAGE);
+                System.out.println(e);
                 return;
             }
             try {
@@ -267,7 +283,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Ne pas pouvoir trouver une solution", "Message", JOptionPane.PLAIN_MESSAGE);
             }
         }else if (event.getSource() == buttonNextPoint){
-            if(focusedPointNumber<serviceMetier.getCommande().getListLivraison().size()) {
+            if (focusedPointNumber<serviceMetier.getCommande().getListLivraison().size()) {
                 focusedPointNumber++;
                 focusedPointId = serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID();
                 Point tmpPoint = serviceMetier.getPlan().getPointsMap().get(focusedPointId);
@@ -280,7 +296,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "C'est deja le dernier livraison", "Message", JOptionPane.PLAIN_MESSAGE);
             }
         }else if(event.getSource()==buttonPreviousPoint){
-            if(focusedPointNumber>0) {
+            if (focusedPointNumber>0) {
                 focusedPointNumber--;
                 focusedPointId = serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID();
                 Point tmpPoint = serviceMetier.getPlan().getPointsMap().get(focusedPointId);
@@ -315,7 +331,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     return;
                 }
                 Livraison l = new Livraison(pointID,serviceMetier.getPlan().getPointsMap().get(pointID).getCoordX(),serviceMetier.getPlan().getPointsMap().get(pointID).getCoordY(),duration,heureDebut,heureFin);
-                ServiceMetier smtmp = serviceMetier;
+                commandeForUndo = new Commande(serviceMetier.getCommande());
                 serviceMetier.ajouterNouveauLivraison(l);
                 serviceMetier.initPlanLivraison();
                 try {
@@ -333,11 +349,13 @@ public class Dashboard extends JFrame implements ActionListener{
                     panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
                     panelFocusedPoint.setBackground(Color.GREEN);
                     panelGlobal.add(panelFocusedPoint);
+                    buttonUndo.setVisible(true);
                     repaint();
                     refreshPanelPointDetail();
                     JOptionPane.showMessageDialog(null, "Reussi!", "Message", JOptionPane.PLAIN_MESSAGE);
                 }else{
-                    serviceMetier = smtmp;
+                    serviceMetier.getCommande().getListLivraison().remove(l);
+                    serviceMetier.initPlanLivraison();
                     JOptionPane.showMessageDialog(null, "Impossible d'ajouter ce livraison", "Message", JOptionPane.PLAIN_MESSAGE);
                     return;
                 }
@@ -350,6 +368,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 boolean found = false;
                 for(Livraison l:serviceMetier.getCommande().getListLivraison()){
                     if(l.getId()==pointID){
+                        commandeForUndo = new Commande(serviceMetier.getCommande());
                         serviceMetier.getCommande().getListLivraison().remove(l);
                         found = true;
                         break;
@@ -360,7 +379,9 @@ public class Dashboard extends JFrame implements ActionListener{
                 }else {
                     serviceMetier.initPlanLivraison();
                     try {
-                        serviceMetier.calculerTournee(true);
+                        do{
+                            serviceMetier.calculerTournee(true);
+                        }while(serviceMetier.getTournee()==null);
                     } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
@@ -373,7 +394,10 @@ public class Dashboard extends JFrame implements ActionListener{
                     panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
                     panelFocusedPoint.setBackground(Color.GREEN);
                     panelGlobal.add(panelFocusedPoint);
+                    buttonUndo.setVisible(true);
                     repaint();
+                    refreshPanelPointDetail();
+                    JOptionPane.showMessageDialog(null, "Reussi", "Message", JOptionPane.PLAIN_MESSAGE);
                 }
             }catch (Exception e){
                 JOptionPane.showMessageDialog(null, "Erreur pendant la suppression", "Message", JOptionPane.PLAIN_MESSAGE);
@@ -382,15 +406,20 @@ public class Dashboard extends JFrame implements ActionListener{
         }else if(event.getSource()==buttonEditPlageHoraire){
             try{
                 Long pointID= Long.valueOf(textEditPointID.getText());
+                int heureDebutOrigine = 0;
+                int heureFinOrigine = Integer.MAX_VALUE;
                 boolean found = false;
                 for(Livraison l:serviceMetier.getCommande().getListLivraison()){
                     if(l.getId()==pointID){
                         found = true;
+                        commandeForUndo = new Commande(serviceMetier.getCommande());
                         int d = 0;
                         int f = Integer.MAX_VALUE;
                         if(!textEditPointHeureDebut.getText().equals("")) d = 3600 * Integer.valueOf(textEditPointHeureDebut.getText().substring(0, 2)) + 60 * Integer.valueOf(textEditPointHeureDebut.getText().substring(3, 5)) + Integer.valueOf(textEditPointHeureDebut.getText().substring(6, 8));
                         if(!textEditPointHeureFin.getText().equals("")) f = 3600 * Integer.valueOf(textEditPointHeureFin.getText().substring(0, 2)) + 60 * Integer.valueOf(textEditPointHeureFin.getText().substring(3, 5)) + Integer.valueOf(textEditPointHeureFin.getText().substring(6, 8));
                         if(d<f) {
+                            heureDebutOrigine = l.getHeureDeDebut();
+                            heureFinOrigine = l.getHeureDeFin();
                             l.setHeureDeDebut(d);
                             l.setHeureDeFin(f);
                         }else{
@@ -404,7 +433,6 @@ public class Dashboard extends JFrame implements ActionListener{
                     JOptionPane.showMessageDialog(null, "Veuillez verifier l'ID du point", "Message", JOptionPane.PLAIN_MESSAGE);
                     return;
                 }else{
-                    ServiceMetier smtmp = serviceMetier;
                     serviceMetier.initPlanLivraison();
                     try {
                         serviceMetier.calculerTournee(true);
@@ -421,41 +449,112 @@ public class Dashboard extends JFrame implements ActionListener{
                         panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
                         panelFocusedPoint.setBackground(Color.GREEN);
                         panelGlobal.add(panelFocusedPoint);
+                        buttonUndo.setVisible(true);
                         repaint();
+                        refreshPanelPointDetail();
                         JOptionPane.showMessageDialog(null, "Reussi!", "Message", JOptionPane.PLAIN_MESSAGE);
                     }else{
-                        serviceMetier = smtmp;
+                        for(Livraison l:serviceMetier.getCommande().getListLivraison()){
+                            if(l.getId()==pointID) {
+                                l.setHeureDeDebut(heureDebutOrigine);
+                                l.setHeureDeFin(heureFinOrigine);
+                            }
+                        }
+                        serviceMetier.initPlanLivraison();
                         JOptionPane.showMessageDialog(null, "Impossible d'effectuer la modification", "Message", JOptionPane.PLAIN_MESSAGE);
                     }
                 }
             }catch(Exception e){
                 JOptionPane.showMessageDialog(null, "Erreur pendant la modification", "Message", JOptionPane.PLAIN_MESSAGE);
             }
+        }else if(event.getSource()==buttonUndo){
+            try {
+                commandeForRedo = new Commande(serviceMetier.getCommande());
+                serviceMetier.setCommande(commandeForUndo);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            serviceMetier.initPlanLivraison();
+            try {
+                do{
+                    serviceMetier.calculerTournee(true);
+                }while(serviceMetier.getTournee()==null);
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+            focusedPointNumber = 0;
+            panelGlobal.remove(myMap);
+            myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+            myMap.setBounds(10,10,900,screenHeight-180);
+            myMap.setLayout(null);
+            panelGlobal.add(myMap);
+            panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+            panelFocusedPoint.setBackground(Color.GREEN);
+            panelGlobal.add(panelFocusedPoint);
+            buttonUndo.setVisible(false);
+            buttonRedo.setVisible(true);
+            repaint();
+            refreshPanelPointDetail();
+            JOptionPane.showMessageDialog(null, "Undo Reussi", "Message", JOptionPane.PLAIN_MESSAGE);
+        }else if(event.getSource()==buttonRedo){
+            try {
+                serviceMetier.setCommande(commandeForRedo);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            serviceMetier.initPlanLivraison();
+            try {
+                do{
+                    serviceMetier.calculerTournee(true);
+                }while(serviceMetier.getTournee()==null);
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+            focusedPointNumber = 0;
+            panelGlobal.remove(myMap);
+            myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+            myMap.setBounds(10,10,900,screenHeight-180);
+            myMap.setLayout(null);
+            panelGlobal.add(myMap);
+            panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+            panelFocusedPoint.setBackground(Color.GREEN);
+            panelGlobal.add(panelFocusedPoint);
+            buttonUndo.setVisible(true);
+            buttonRedo.setVisible(false);
+            repaint();
+            refreshPanelPointDetail();
+            JOptionPane.showMessageDialog(null, "Redo Reussi", "Message", JOptionPane.PLAIN_MESSAGE);
+        }else if(event.getSource()==buttonGenerateFile){
+            UtilXML myUtil = new UtilXML();
+            myUtil.writeTourneeToFile("fichiersXML/output.txt",serviceMetier);
         }
-
     }
-    private void refreshPanelPointDetail(){
+    public void refreshPanelPointDetail(){
         if(focusedPointNumber==0) {
+            int heureDepartint = serviceMetier.getCommande().getHeureDeDepart();
+            String heureDepart = String.valueOf((heureDepartint - heureDepartint % 3600) / 3600) + ":" + String.valueOf(((heureDepartint - heureDepartint % 60) % 3600) / 60) + ":" + String.valueOf(heureDepartint % 60);
             labelPointDetail.setText("<html>Entrepot:<br>Coordonne X:" + serviceMetier.getCommande().getEntrepot().getCoordX() + "<br>" +
                     "Coordonne Y:" + serviceMetier.getCommande().getEntrepot().getCoordY() + "<br>" +
-                    "Heure de depart:" + serviceMetier.getCommande().getHeureDeDepart() + "</html>");
+                    "Heure de depart:" + heureDepart + "</html>");
             labelPointDetail.repaint();
         }else{
-            String heureDeDebut = "N/A";
+            String heureDeDebut= "N/A";
             String heureDeFin = "N/A";
             String duree = "N/A";
-            String arrivee = null;
+            int arriveeint = (int)serviceMetier.calculerArrivalTime()[focusedPointNumber];
+            String arrivee = String.valueOf((arriveeint - arriveeint % 3600) / 3600) + ":" + String.valueOf(((arriveeint - arriveeint % 60) % 3600) / 60) + ":" + String.valueOf(arriveeint % 60);
             for (Livraison l : serviceMetier.getCommande().getListLivraison()) {
                 if (l.getId() == serviceMetier.getPlan().getPointsMap().get(focusedPointId).getId()) {
                     int d = l.getHeureDeDebut();
                     int f = l.getHeureDeFin();
-                    if (d >= 0) {
+                    if (d > 0) {
                         heureDeDebut = String.valueOf((d - d % 3600) / 3600) + ":" + String.valueOf(((d - d % 60) % 3600) / 60) + ":" + String.valueOf(d % 60);
                     }
-                    if (f <= 3600 * 24 && f != -1) {
+                    if (f <= 3600 * 24) {
                         heureDeFin = String.valueOf((f - f % 3600) / 3600) + ":" + String.valueOf(((f - f % 60) % 3600) / 60) + ":" + String.valueOf(f % 60);
                     }
                     duree = String.valueOf(l.getDuree());
+                    break;
                 }
             }
             labelPointDetail.setText("<html>Coordonne X:" + serviceMetier.getPlan().getPointsMap().get(focusedPointId).getCoordX() + "<br>" +
@@ -463,14 +562,17 @@ public class Dashboard extends JFrame implements ActionListener{
                     "Heure de debut:" + heureDeDebut + "<br>" +
                     "Heure de fin:" + heureDeFin + "<br>" +
                     "Duree:" + duree + "<br>" +
-                    "Arrivee:" + "</html>");
+                    "Arrivee:" + arrivee+"</html>");
             labelPointDetail.repaint();
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         ServiceMetier sm = new ServiceMetier();
         Dashboard myDashboard = new Dashboard(sm);
+
+
+
     }
 }
 

@@ -4,11 +4,18 @@ public class Point {
     protected long id;
     protected int coordX;
     protected int coordY;
+    public Point(){
 
+    }
     public Point(long id, int coordX, int coordY) {
         this.id = id;
         this.coordX = coordX;
         this.coordY = coordY;
+    }
+    public Point(Point point){
+        this.id = point.getId();
+        this.coordX = point.getCoordX();
+        this.coordY = point.getCoordY();
     }
     public int getCoordX() {
         return coordX;

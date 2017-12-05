@@ -9,7 +9,7 @@ import tsp.TSP1;
 import java.io.IOException;
 import java.util.*;
 
-public class ServiceMetier {
+public class ServiceMetier implements Cloneable{
 
     public Commande getCommande() {
         return commande;
@@ -363,6 +363,10 @@ public class ServiceMetier {
         return tournee;
     }
 
+    public void setCommande(Commande c) throws IOException, ClassNotFoundException {
+        this.commande = new Commande(c);
+    }
+
     public void ajouterNouveauLivraison(Livraison livraison){
         List <Chemin> listChemin = tournee.getChemins();
         commande.getListLivraison().clear();
@@ -395,15 +399,15 @@ public class ServiceMetier {
     }
     public double[] calculeArrivalTime(List<Long> l) {
         //System.out.println("enter calculeArrivalTime");
-        double[] arrivalTimes = new double[l.size()];
-        double[] leaveTimes = new double[l.size()];
+        double[] arrivalTimes = new double[l.size()+1];
+        double[] leaveTimes = new double[l.size()+1];
         arrivalTimes[0] = commande.getHeureDeDepart();
         leaveTimes[0] = commande.getHeureDeDepart();
         HashMap<Long,Livraison> pl = planLivraison.getLivraisonsMap();
-        for (int i=1;i<l.size();i++) {
+        for (int i=1;i<=l.size();i++) {
             long idStart = l.get(i-1);
             double duree = pl.get(idStart).getDuree();
-            long idDes = l.get(i);
+            long idDes = i<l.size()?l.get(i):commande.getEntrepot().getId();
             double longeur = planLivraison.getCheminsMap().get(idStart).get(idDes).getLongeur();
             //System.out.println(idStart+"-->"+idDes+" "+longeur);
             arrivalTimes[i] = leaveTimes[i-1] + duree + longeur/vitesse;
@@ -414,6 +418,13 @@ public class ServiceMetier {
             }
         }
         return arrivalTimes;
+    }
+    public ServiceMetier clone(){
+        try {
+            return (ServiceMetier) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 }
 

@@ -15,7 +15,7 @@ public class TSPTW {
     private int levelMax = 10;
     private int levelMaxGVNS = 100;
 
-    private static <T> List<T> deepCopy(List<T> src) throws IOException, ClassNotFoundException {
+    public static <T> List<T> deepCopy(List<T> src) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(byteOut);
         out.writeObject(src);

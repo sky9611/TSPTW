@@ -1,6 +1,7 @@
 package com.septanome.util;
 
 import com.septanome.model.*;
+import com.septanome.service.ServiceMetier;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,7 +15,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -226,48 +229,42 @@ public class UtilXML {
         return point;
     }
 
-    public void writeTourneeToFile(String folder) {
+    public void writeTourneeToFile(String filename, ServiceMetier serviceMetier) {
+        String content = new String();
+        List<Chemin> cheminList;
+        List<Troncon> tronconList;
+        cheminList = serviceMetier.getTournee().getChemins();
+        double[] arrivalTim = serviceMetier.calculerArrivalTime();
+        arrivalTim = serviceMetier.calculerArrivalTime();
+        for(int i = 0; i<cheminList.size();i++){
+            if(i<cheminList.size()-1) {
+                content += "arrival time is: " + Double.toString(arrivalTim[i]/3600) + "\n";
+            }
+            //content += cheminList.get(i).getTroncons().toString();
+            tronconList = cheminList.get(i).getTroncons();
+            content += "livraison numero: " + i + "\n";
+            for(int j=0;j<tronconList.size();j++){
+                content += tronconList.get(j).toString();
+                content += "\n";
+            }
+            if(i<cheminList.size()-1) {
+                content += "depart time is: " + Double.toString(arrivalTim[i]/3600) + "\n";
+            }
+            content += "livraison " + i + " est termine\n\n\n";
+        }
         try {
+            File file = new File(filename);
+            if(file.exists()){
+                FileWriter fw = new FileWriter(file,false);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(content);
+                bw.close();
+                fw.close();
+            }
 
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-
-            Document document = builder.newDocument();
-            Element root = document.createElement("Languages");
-            root.setAttribute("cat", "it");
-            Element lan = document.createElement("lan");
-            lan.setAttribute("id", "1");
-            Element name = document.createElement("name");
-            name.setTextContent("java");
-            Element ide = document.createElement("IDE");
-            ide.setTextContent("Eclipse");
-            lan.appendChild(name);
-            lan.appendChild(ide);
-            Element lan2 = document.createElement("lan");
-            lan2.setAttribute("id", "2");
-            Element name2 = document.createElement("name");
-            name2.setTextContent("Swift");
-            Element ide2 = document.createElement("ide");
-            ide2.setTextContent("XCode");
-            lan2.appendChild(name2);
-            lan2.appendChild(ide2);
-
-            root.appendChild(lan);
-            root.appendChild(lan2);
-            document.appendChild(root);
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty("encoding", "UTF-8");
-
-            StringWriter writer = new StringWriter();
-            transformer.transform(new DOMSource(document), new StreamResult(writer));
-            System.out.println(writer.toString());
-
-            transformer.transform(new DOMSource(document), new StreamResult(new File(folder)));
-        } catch (ParserConfigurationException | TransformerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void bubbleSort(int a[]) {
