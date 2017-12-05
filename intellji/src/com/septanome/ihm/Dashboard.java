@@ -356,7 +356,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     refreshPanelPointDetail();
                     JOptionPane.showMessageDialog(null, "Reussi!", "Message", JOptionPane.PLAIN_MESSAGE);
                 }else{
-                    serviceMetier.getCommande().getListLivraison().remove(l);
+                    serviceMetier.setCommande(commandeForUndo);
                     serviceMetier.initPlanLivraison();
                     JOptionPane.showMessageDialog(null, "Impossible d'ajouter ce livraison", "Message", JOptionPane.PLAIN_MESSAGE);
                     return;
