@@ -48,8 +48,8 @@ public class Dashboard extends JFrame implements ActionListener{
     JButton buttonRedo = new JButton("Redo");
     JButton buttonGenerateFile = new JButton("Generer un fichier");
     JLabel labelPointDetail = new JLabel("");
-    JTextField textImportMapFile=new JTextField("D:\\My Documents\\Intellji Program\\TSPTW\\fichiersXML\\planLyonGrand.xml");
-    JTextField textImportCommandFile=new JTextField("D:\\My Documents\\Intellji Program\\TSPTW\\fichiersXML\\DLgrand20TW.xml");
+    JTextField textImportMapFile=new JTextField("fichiersXML/planLyonGrand.xml");
+    JTextField textImportCommandFile=new JTextField("fichiersXML/DLgrand20TW.xml");
     JTextField textAddPointId = new JTextField();
     JTextField textAddPointHeureDebut = new JTextField();
     JTextField textAddPointHeureFin = new JTextField();
