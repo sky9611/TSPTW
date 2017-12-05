@@ -25,7 +25,7 @@ public class Dashboard extends JFrame implements ActionListener{
     int xmin;
     int ymin;
     int scale;
-    double ratio = 2;
+    double ratio = 1.5;
     DeliveryMap myMap = new DeliveryMap(serviceMetier,0,2);
     JPanel panelGlobal = new JPanel();
     JPanel panelChooseFile = new JPanel();
@@ -119,7 +119,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelAddPoint.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/4*3,400,500,180);
         panelAddPoint.setLayout(null);
         panelAddPoint.setBackground(Color.green);
-        JLabel labelAddPointTitle = new JLabel("Ajouter un nouveau livraison:");
+        JLabel labelAddPointTitle = new JLabel("Ajouter une nouvelle livraison:");
         JLabel labelAddPointID = new JLabel("Point Id:                                                                                                   *");
         JLabel labelAddPointPlageHoraire = new JLabel("Plage horaire:  De                                       A                                          (format: hh:mm:ss)");
         JLabel labelAddPointDuration = new JLabel("Duree:                                                                                                      *");
@@ -269,7 +269,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 xmin = myMap.getXmin();
                 ymin = myMap.getYmin();
                 scale = myMap.getScale();
-                panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+                panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 )*ratio +6), (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180))+6, 15, 15);
                 panelFocusedPoint.setBackground(Color.GREEN);
                 panelGlobal.add(panelFocusedPoint);
                 panelSelectPoint.setVisible(true);
@@ -288,7 +288,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 focusedPointNumber++;
                 focusedPointId = serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID();
                 Point tmpPoint = serviceMetier.getPlan().getPointsMap().get(focusedPointId);
-                panelFocusedPoint.setBounds((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+                panelFocusedPoint.setBounds((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 )*ratio +6), (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (screenHeight-180))+6, 15, 15);
                 panelFocusedPoint.setBackground(Color.RED);
                 panelGlobal.add(panelFocusedPoint);
                 repaint();
@@ -301,7 +301,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 focusedPointNumber--;
                 focusedPointId = serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID();
                 Point tmpPoint = serviceMetier.getPlan().getPointsMap().get(focusedPointId);
-                panelFocusedPoint.setBounds((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+                panelFocusedPoint.setBounds((int) ((((double) tmpPoint.getCoordX()) - xmin) / scale * (screenHeight-180 )*ratio +6), (int) ((((double) tmpPoint.getCoordY()) - ymin) / scale * (screenHeight-180))+6, 15, 15);
                 panelFocusedPoint.setBackground(Color.RED);
                 panelGlobal.add(panelFocusedPoint);
                 repaint();
@@ -347,7 +347,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                     myMap.setLayout(null);
                     panelGlobal.add(myMap);
-                    panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+                    panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 )*ratio +6), (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180))+6, 15, 15);
                     panelFocusedPoint.setBackground(Color.GREEN);
                     panelGlobal.add(panelFocusedPoint);
                     buttonUndo.setVisible(true);
@@ -392,7 +392,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                     myMap.setLayout(null);
                     panelGlobal.add(myMap);
-                    panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+                    panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 )*ratio +6), (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180))+6, 15, 15);
                     panelFocusedPoint.setBackground(Color.GREEN);
                     panelGlobal.add(panelFocusedPoint);
                     buttonUndo.setVisible(true);
@@ -447,7 +447,7 @@ public class Dashboard extends JFrame implements ActionListener{
                         myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                         myMap.setLayout(null);
                         panelGlobal.add(myMap);
-                        panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+                        panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 )*ratio +6), (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180))+6, 15, 15);
                         panelFocusedPoint.setBackground(Color.GREEN);
                         panelGlobal.add(panelFocusedPoint);
                         buttonUndo.setVisible(true);
@@ -489,7 +489,7 @@ public class Dashboard extends JFrame implements ActionListener{
             myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
             myMap.setLayout(null);
             panelGlobal.add(myMap);
-            panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+            panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 )*ratio +6), (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180))+6, 15, 15);
             panelFocusedPoint.setBackground(Color.GREEN);
             panelGlobal.add(panelFocusedPoint);
             buttonUndo.setVisible(false);
@@ -517,7 +517,7 @@ public class Dashboard extends JFrame implements ActionListener{
             myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
             myMap.setLayout(null);
             panelGlobal.add(myMap);
-            panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
+            panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 )*ratio +6), (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180))+6, 15, 15);
             panelFocusedPoint.setBackground(Color.GREEN);
             panelGlobal.add(panelFocusedPoint);
             buttonUndo.setVisible(true);
