@@ -71,8 +71,8 @@ public class DeliveryMap extends JPanel  {
 
 
         for(Map.Entry<Long,Point> entry:p.entrySet()){
-            g.fillOval((int)((((double)entry.getValue().getCoordX())-xmin)/scale*(screenHeigth-12)),
-                    (int)((((double)entry.getValue().getCoordY())-ymin)/scale*(screenHeigth-37)), 4, 4);
+            g.fillOval((int)((((double)entry.getValue().getCoordX())-xmin)/scale*(screenHeigth)),
+                    (int)((((double)entry.getValue().getCoordY())-ymin)/scale*(screenHeigth)), 4, 4);
         }
 
         g.drawLine(screenHeigth,0,screenHeigth,screenHeigth);
@@ -83,10 +83,10 @@ public class DeliveryMap extends JPanel  {
             HashMap<Long,Troncon> h= entry.getValue();
             for(Map.Entry<Long,Troncon> e:h.entrySet()){
                 Long idDest=e.getKey();
-                g.drawLine((int)((((double)p.get(idOri).getCoordX())-xmin)/scale*(screenHeigth-12))+5,
-                        (int)((((double)p.get(idOri).getCoordY())-ymin)/scale*(screenHeigth-37))+5,
-                        (int)((((double)p.get(idDest).getCoordX())-xmin)/scale*(screenHeigth-12))+5,
-                        (int)((((double)p.get(idDest).getCoordY())-ymin)/scale*(screenHeigth-37))+5);
+                g.drawLine((int)((((double)p.get(idOri).getCoordX())-xmin)/scale*(screenHeigth)),
+                        (int)((((double)p.get(idOri).getCoordY())-ymin)/scale*(screenHeigth)),
+                        (int)((((double)p.get(idDest).getCoordX())-xmin)/scale*(screenHeigth)),
+                        (int)((((double)p.get(idDest).getCoordY())-ymin)/scale*(screenHeigth)));
             }
         }
         Graphics2D g2 = (Graphics2D)g;
@@ -102,21 +102,21 @@ public class DeliveryMap extends JPanel  {
                 //System.out.println(startY);
                 double endX = p.get(tr.getDestinationID()).getCoordX();
                 double endY = p.get(tr.getDestinationID()).getCoordY();
-                g2.drawLine((int)(((startX-xmin)/scale*(screenHeigth-12)))+5,
-                        (int)((startY-ymin)/scale*(screenHeigth-37))+5,
-                        (int)((endX-xmin)/scale*(screenHeigth-12))+5,
-                        (int)((endY-ymin)/scale*(screenHeigth-37))+5);
+                g2.drawLine((int)(((startX-xmin)/scale*(screenHeigth))),
+                        (int)((startY-ymin)/scale*(screenHeigth)),
+                        (int)((endX-xmin)/scale*(screenHeigth)),
+                        (int)((endY-ymin)/scale*(screenHeigth)));
             }
         }
         g.setColor(Color.green);
-        int CoordX =(int)((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth-12));
-        int CoordY = (int)((((double)commande.getEntrepot().getCoordY())-ymin)/scale*(screenHeigth-37));
+        int CoordX =(int)((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth));
+        int CoordY = (int)((((double)commande.getEntrepot().getCoordY())-ymin)/scale*(screenHeigth));
         g.fillOval(CoordX, CoordY, 8, 8);
         g.setColor(Color.BLUE);
 
         for(Livraison l:commande.getListLivraison()){
-            CoordX =(int)((((double)l.getCoordX())-xmin)/scale*(screenHeigth-12));
-            CoordY = (int)((((double)l.getCoordY())-ymin)/scale*(screenHeigth-37));
+            CoordX =(int)((((double)l.getCoordX())-xmin)/scale*(screenHeigth));
+            CoordY = (int)((((double)l.getCoordY())-ymin)/scale*(screenHeigth));
             g.fillOval(CoordX, CoordY, 8, 8);
         }
 

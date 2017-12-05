@@ -564,12 +564,13 @@ public class Dashboard extends JFrame implements ActionListener{
                     break;
                 }
             }
-            labelPointDetail.setText("<html>Coordonne X:" + serviceMetier.getPlan().getPointsMap().get(focusedPointId).getCoordX() + "<br>" +
-                    "Coordonne Y:" + serviceMetier.getPlan().getPointsMap().get(focusedPointId).getCoordY() + "<br>" +
-                    "Heure de debut:" + heureDeDebut + "<br>" +
-                    "Heure de fin:" + heureDeFin + "<br>" +
-                    "Duree:" + duree + "<br>" +
-                    "Arrivee:" + arrivee+"</html>");
+            labelPointDetail.setText("<html>" +"Point ID: "+serviceMetier.getTournee().getChemins().get(focusedPointNumber).getOriginePointID()+"<br>"+
+                    "Coordonne X: " + serviceMetier.getPlan().getPointsMap().get(focusedPointId).getCoordX() + "<br>" +
+                    "Coordonne Y: " + serviceMetier.getPlan().getPointsMap().get(focusedPointId).getCoordY() + "<br>" +
+                    "Heure de debut: " + heureDeDebut + "<br>" +
+                    "Heure de fin: " + heureDeFin + "<br>" +
+                    "Duree: " + duree + "<br>" +
+                    "Arrivee: " + arrivee+"</html>");
             labelPointDetail.repaint();
         }
     }
