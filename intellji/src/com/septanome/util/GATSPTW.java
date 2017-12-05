@@ -14,10 +14,10 @@ public class GATSPTW {
     private Commande commande = new Commande();
     private long idEntrepot;
     private List<Long> idLivraisons = new ArrayList<>();
-    private int populationSize = 10;
+    private int populationSize = 20;
     private HashMap<Integer, List<Long>> population = new HashMap<>();
-    private double pc = 0.75;
-    private double pe = 0.25;
+    private double pc = 0.8;
+    private double pe = 0.2;
     private int M = 1000;
     private int OBC_number;
     private Tournee tournee = new Tournee();
@@ -148,11 +148,11 @@ public class GATSPTW {
                 }
             }
             population = newPopulation;
-//            List<Long> newBestOrder = getBestSolution();
-//            if (newBestOrder.equals(bestOrder)) bestKeepTime++;
-//            else bestKeepTime = 0;
-//            bestOrder = newBestOrder;
-//            if (bestKeepTime > 8) break;
+            List<Long> newBestOrder = getBestSolution();
+            if (newBestOrder.equals(bestOrder)) bestKeepTime++;
+            else bestKeepTime = 0;
+            bestOrder = newBestOrder;
+
 
             iter++;
             double[] fitnesses = new double[population.size()];
@@ -160,12 +160,13 @@ public class GATSPTW {
                 fitnesses[entry.getKey()] = fitness(entry.getValue());
             }
             if (averageOf(fitnesses) > 0.99999 * maxOf(fitnesses)) break;
-
+            if (bestKeepTime > 10) break;
         }
 
-        bestOrder = getBestSolution();
+        //bestOrder = getBestSolution();
 //        printList(bestOrder);
-        //System.out.println(isFleasible(bestOrder));
+//        System.out.println(isFleasible(bestOrder));
+        System.out.println("iter="+iter+" keep time="+bestKeepTime);
         System.out.println(Cout(bestOrder));
         //Tournee t = new Tournee();
         List<Chemin> chemins = new ArrayList<>();
