@@ -188,9 +188,10 @@ public class Dashboard extends JFrame implements ActionListener{
         panelUndo.setLayout(null);
         buttonUndo.setBounds(10,10,100,50);
         buttonRedo.setBounds(120,10,100,50);
-        buttonGenerateFile.setBounds(panelUndo.getWidth()-110,10,150,50);
+        buttonGenerateFile.setBounds(panelUndo.getWidth()-160,10,150,50);
         buttonUndo.setVisible(false);
         buttonRedo.setVisible(false);
+        buttonGenerateFile.setVisible(false);
         buttonUndo.addActionListener(this);
         buttonRedo.addActionListener(this);
         buttonGenerateFile.addActionListener(this);
@@ -277,6 +278,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 panelAddPoint.setVisible(true);
                 panelRemovePoint.setVisible(true);
                 panelEditPlageHoraire.setVisible(true);
+                buttonGenerateFile.setVisible(true);
                 repaint();
                 refreshPanelPointDetail();
             }else{
@@ -525,8 +527,13 @@ public class Dashboard extends JFrame implements ActionListener{
             refreshPanelPointDetail();
             JOptionPane.showMessageDialog(null, "Redo Reussi", "Message", JOptionPane.PLAIN_MESSAGE);
         }else if(event.getSource()==buttonGenerateFile){
-            UtilXML myUtil = new UtilXML();
-            myUtil.writeTourneeToFile("fichiersXML/output.txt",serviceMetier);
+            try {
+                UtilXML myUtil = new UtilXML();
+                myUtil.writeTourneeToFile("fichiersXML/output.txt", serviceMetier);
+                JOptionPane.showMessageDialog(null, "Fichier genere!", "Message", JOptionPane.PLAIN_MESSAGE);
+            }catch (Exception e){
+                JOptionPane.showMessageDialog(null, "Erreur pendant l'ecriture", "Message", JOptionPane.PLAIN_MESSAGE);
+            }
         }
     }
     public void refreshPanelPointDetail(){

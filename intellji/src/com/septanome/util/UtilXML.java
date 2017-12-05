@@ -243,6 +243,7 @@ public class UtilXML {
             //content += cheminList.get(i).getTroncons().toString();
             tronconList = cheminList.get(i).getTroncons();
             content += "livraison numero: " + i + "\n";
+            content += "livraison point ID: "+ serviceMetier.getTournee().getChemins().get(i).getDestinationPointID()+"\n";
             for(int j=0;j<tronconList.size();j++){
                 content += tronconList.get(j).toString();
                 content += "\n";
