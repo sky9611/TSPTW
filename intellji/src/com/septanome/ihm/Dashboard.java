@@ -75,7 +75,6 @@ public class Dashboard extends JFrame implements ActionListener{
 
         panelChooseFile.setBounds(900,10,500,250);
         panelChooseFile.setLayout(null);
-        panelChooseFile.setBackground(Color.green);
         buttonChooseMap.addActionListener(this);
         buttonChooseCommand.addActionListener(this);
         buttonChargeMap.addActionListener(this);
@@ -148,7 +147,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelRemovePoint.setBounds(900,580,500,130);
         panelRemovePoint.setLayout(null);
         panelRemovePoint.setBackground(Color.MAGENTA);
-        JLabel labelRemovePointTitle = new JLabel("Relever un livraison:");
+        JLabel labelRemovePointTitle = new JLabel("Enlever une livraison:");
         JLabel labelRemovePointID = new JLabel("Point Id:                                                                                                   *");
         labelRemovePointTitle.setBounds(50,10,200,30);
         labelRemovePointID.setBounds(10,40,500,30);
@@ -166,7 +165,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelEditPlageHoraire.setBackground(Color.LIGHT_GRAY);
         JLabel labelEditPointID = new JLabel("Point Id:                                                                                                   *");
         JLabel labelEditPointPlageHoraire = new JLabel("Plage horaire:  De                                       A                                          (format: hh:mm:ss)");
-        JLabel labelEditPointTitle = new JLabel("Modifier un livraison:");
+        JLabel labelEditPointTitle = new JLabel("Modifier une livraison:");
         labelEditPointTitle.setBounds(50,10,500,30);
         labelEditPointID.setBounds(10,40,500,30);
         labelEditPointPlageHoraire.setBounds(10,70,500,30);
