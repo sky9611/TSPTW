@@ -24,11 +24,12 @@ public class DeliveryMap extends JPanel  {
     int ymin;
     int ymax;
     int scale;
+    double ratio;
 
     public DeliveryMap(ServiceMetier sm, int h, double ratio){
         this.sm =sm;
         screenHeigth=h;
-
+        this.ratio = ratio;
         p.putAll(sm.getPlan().getPointsMap());
 
         r.putAll(sm.getPlan().getTronconsMap());
@@ -71,11 +72,11 @@ public class DeliveryMap extends JPanel  {
 
 
         for(Map.Entry<Long,Point> entry:p.entrySet()){
-            g.fillOval((int)((((double)entry.getValue().getCoordX())-xmin)/scale*(screenHeigth)),
+            g.fillOval((int)(((((double)entry.getValue().getCoordX())-xmin)/scale*(screenHeigth))*ratio),
                     (int)((((double)entry.getValue().getCoordY())-ymin)/scale*(screenHeigth)), 4, 4);
         }
 
-        g.drawLine(screenHeigth,0,screenHeigth,screenHeigth);
+        //g.drawLine(screenHeigth,0,screenHeigth,screenHeigth);
 
 
         for(Map.Entry<Long,HashMap<Long,Troncon>> entry:r.entrySet()){
@@ -83,9 +84,9 @@ public class DeliveryMap extends JPanel  {
             HashMap<Long,Troncon> h= entry.getValue();
             for(Map.Entry<Long,Troncon> e:h.entrySet()){
                 Long idDest=e.getKey();
-                g.drawLine((int)((((double)p.get(idOri).getCoordX())-xmin)/scale*(screenHeigth)),
+                g.drawLine((int)(((((double)p.get(idOri).getCoordX())-xmin)/scale*(screenHeigth))*ratio),
                         (int)((((double)p.get(idOri).getCoordY())-ymin)/scale*(screenHeigth)),
-                        (int)((((double)p.get(idDest).getCoordX())-xmin)/scale*(screenHeigth)),
+                        (int)(((((double)p.get(idDest).getCoordX())-xmin)/scale*(screenHeigth))*ratio),
                         (int)((((double)p.get(idDest).getCoordY())-ymin)/scale*(screenHeigth)));
             }
         }
@@ -102,20 +103,20 @@ public class DeliveryMap extends JPanel  {
                 //System.out.println(startY);
                 double endX = p.get(tr.getDestinationID()).getCoordX();
                 double endY = p.get(tr.getDestinationID()).getCoordY();
-                g2.drawLine((int)(((startX-xmin)/scale*(screenHeigth))),
+                g2.drawLine((int)((((startX-xmin)/scale*(screenHeigth)))*ratio),
                         (int)((startY-ymin)/scale*(screenHeigth)),
-                        (int)((endX-xmin)/scale*(screenHeigth)),
+                        (int)(((endX-xmin)/scale*(screenHeigth))*ratio),
                         (int)((endY-ymin)/scale*(screenHeigth)));
             }
         }
         g.setColor(Color.green);
-        int CoordX =(int)((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth));
+        int CoordX =(int)(((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth))*ratio);
         int CoordY = (int)((((double)commande.getEntrepot().getCoordY())-ymin)/scale*(screenHeigth));
         g.fillOval(CoordX, CoordY, 8, 8);
         g.setColor(Color.BLUE);
 
         for(Livraison l:commande.getListLivraison()){
-            CoordX =(int)((((double)l.getCoordX())-xmin)/scale*(screenHeigth));
+            CoordX =(int)(((((double)l.getCoordX())-xmin)/scale*(screenHeigth))*ratio);
             CoordY = (int)((((double)l.getCoordY())-ymin)/scale*(screenHeigth));
             g.fillOval(CoordX, CoordY, 8, 8);
         }

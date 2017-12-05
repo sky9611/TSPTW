@@ -25,8 +25,8 @@ public class Dashboard extends JFrame implements ActionListener{
     int xmin;
     int ymin;
     int scale;
-
-    DeliveryMap myMap = new DeliveryMap(serviceMetier,0);
+    double ratio = 2;
+    DeliveryMap myMap = new DeliveryMap(serviceMetier,0,2);
     JPanel panelGlobal = new JPanel();
     JPanel panelChooseFile = new JPanel();
     JPanel panelFocusedPoint =new JPanel();
@@ -70,8 +70,8 @@ public class Dashboard extends JFrame implements ActionListener{
         // Pour permettre la fermeture de la fenêtre lors de l'appui sur la croix rouge
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        myMap.setBounds(10,10,900,900);
-        myMap.setBackground(Color.cyan);
+//        myMap.setBounds(10,10,900,900);
+//        myMap.setBackground(Color.cyan);
 
         panelChooseFile.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/4*3,10,500,250);
         panelChooseFile.setLayout(null);
@@ -261,7 +261,7 @@ public class Dashboard extends JFrame implements ActionListener{
             if(serviceMetier.getTournee()!=null) {
                 focusedPointNumber = 0;
                 panelGlobal.remove(myMap);
-                myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+                myMap = new DeliveryMap(serviceMetier,screenHeight-180,ratio);
                 myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                 myMap.setLayout(null);
                 panelGlobal.add(myMap);
@@ -343,7 +343,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 if(serviceMetier.getTournee()!=null){
                     focusedPointNumber = 0;
                     panelGlobal.remove(myMap);
-                    myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+                    myMap = new DeliveryMap(serviceMetier,screenHeight-180,ratio);
                     myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                     myMap.setLayout(null);
                     panelGlobal.add(myMap);
@@ -388,7 +388,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     }
                     focusedPointNumber = 0;
                     panelGlobal.remove(myMap);
-                    myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+                    myMap = new DeliveryMap(serviceMetier,screenHeight-180,ratio);
                     myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                     myMap.setLayout(null);
                     panelGlobal.add(myMap);
@@ -443,7 +443,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     if(serviceMetier.getTournee()!=null) {
                         focusedPointNumber = 0;
                         panelGlobal.remove(myMap);
-                        myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+                        myMap = new DeliveryMap(serviceMetier,screenHeight-180,ratio);
                         myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                         myMap.setLayout(null);
                         panelGlobal.add(myMap);
@@ -485,7 +485,7 @@ public class Dashboard extends JFrame implements ActionListener{
             }
             focusedPointNumber = 0;
             panelGlobal.remove(myMap);
-            myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+            myMap = new DeliveryMap(serviceMetier,screenHeight-180,ratio);
             myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
             myMap.setLayout(null);
             panelGlobal.add(myMap);
@@ -513,7 +513,7 @@ public class Dashboard extends JFrame implements ActionListener{
             }
             focusedPointNumber = 0;
             panelGlobal.remove(myMap);
-            myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
+            myMap = new DeliveryMap(serviceMetier,screenHeight-180,ratio);
             myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
             myMap.setLayout(null);
             panelGlobal.add(myMap);
