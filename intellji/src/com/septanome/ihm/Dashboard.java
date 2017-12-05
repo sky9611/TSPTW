@@ -73,7 +73,7 @@ public class Dashboard extends JFrame implements ActionListener{
         myMap.setBounds(10,10,900,900);
         myMap.setBackground(Color.cyan);
 
-        panelChooseFile.setBounds(900,10,500,250);
+        panelChooseFile.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/4*3,10,500,250);
         panelChooseFile.setLayout(null);
         buttonChooseMap.addActionListener(this);
         buttonChooseCommand.addActionListener(this);
@@ -109,14 +109,14 @@ public class Dashboard extends JFrame implements ActionListener{
         panelFocusedPoint.setBounds(0,0,0,0);
         panelFocusedPoint.setLayout(null);
 
-        panelPointDetail.setBounds(900,250,500,150);
+        panelPointDetail.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/4*3,250,500,150);
         panelPointDetail.setLayout(null);
         panelPointDetail.setBackground(Color.ORANGE);
         labelPointDetail.setBounds(10,10,450,150);
         panelPointDetail.add(labelPointDetail);
         panelPointDetail.setVisible(false);
 
-        panelAddPoint.setBounds(900,400,500,180);
+        panelAddPoint.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/4*3,400,500,180);
         panelAddPoint.setLayout(null);
         panelAddPoint.setBackground(Color.green);
         JLabel labelAddPointTitle = new JLabel("Ajouter un nouveau livraison:");
@@ -144,7 +144,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelAddPoint.add(buttonAddPoint);
         panelAddPoint.setVisible(false);
 
-        panelRemovePoint.setBounds(900,580,500,130);
+        panelRemovePoint.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/4*3,580,500,130);
         panelRemovePoint.setLayout(null);
         panelRemovePoint.setBackground(Color.MAGENTA);
         JLabel labelRemovePointTitle = new JLabel("Enlever une livraison:");
@@ -160,7 +160,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelRemovePoint.add(buttonRemovePoint);
         panelRemovePoint.setVisible(false);
 
-        panelEditPlageHoraire.setBounds(900,710,500,180);
+        panelEditPlageHoraire.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/4*3,710,500,180);
         panelEditPlageHoraire.setLayout(null);
         panelEditPlageHoraire.setBackground(Color.LIGHT_GRAY);
         JLabel labelEditPointID = new JLabel("Point Id:                                                                                                   *");
@@ -183,7 +183,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelEditPlageHoraire.add(buttonEditPlageHoraire);
         panelEditPlageHoraire.setVisible(false);
 
-        panelUndo.setBounds(900,screenHeight-160,500,70);
+        panelUndo.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-160,500,70);
         panelUndo.setLayout(null);
         buttonUndo.setBounds(10,10,100,50);
         buttonRedo.setBounds(120,10,100,50);
@@ -198,7 +198,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelUndo.add(buttonRedo);
         panelUndo.add(buttonGenerateFile);
 
-        panelGlobal.setBounds(0,0,1600,900);
+        panelGlobal.setBounds(0,0,Toolkit.getDefaultToolkit().getScreenSize().width,Toolkit.getDefaultToolkit().getScreenSize().height);
         panelGlobal.setLayout(null);
         panelGlobal.add(panelChooseFile);
         panelGlobal.add(panelSelectPoint);
@@ -262,7 +262,7 @@ public class Dashboard extends JFrame implements ActionListener{
                 focusedPointNumber = 0;
                 panelGlobal.remove(myMap);
                 myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
-                myMap.setBounds(10,10,900,screenHeight-180);
+                myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                 myMap.setLayout(null);
                 panelGlobal.add(myMap);
                 repaint();
@@ -344,7 +344,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     focusedPointNumber = 0;
                     panelGlobal.remove(myMap);
                     myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
-                    myMap.setBounds(10,10,900,screenHeight-180);
+                    myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                     myMap.setLayout(null);
                     panelGlobal.add(myMap);
                     panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
@@ -389,7 +389,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     focusedPointNumber = 0;
                     panelGlobal.remove(myMap);
                     myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
-                    myMap.setBounds(10,10,900,screenHeight-180);
+                    myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                     myMap.setLayout(null);
                     panelGlobal.add(myMap);
                     panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
@@ -444,7 +444,7 @@ public class Dashboard extends JFrame implements ActionListener{
                         focusedPointNumber = 0;
                         panelGlobal.remove(myMap);
                         myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
-                        myMap.setBounds(10,10,900,screenHeight-180);
+                        myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
                         myMap.setLayout(null);
                         panelGlobal.add(myMap);
                         panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
@@ -486,7 +486,7 @@ public class Dashboard extends JFrame implements ActionListener{
             focusedPointNumber = 0;
             panelGlobal.remove(myMap);
             myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
-            myMap.setBounds(10,10,900,screenHeight-180);
+            myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
             myMap.setLayout(null);
             panelGlobal.add(myMap);
             panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);
@@ -514,7 +514,7 @@ public class Dashboard extends JFrame implements ActionListener{
             focusedPointNumber = 0;
             panelGlobal.remove(myMap);
             myMap = new DeliveryMap(serviceMetier, screenHeight - 180);
-            myMap.setBounds(10,10,900,screenHeight-180);
+            myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
             myMap.setLayout(null);
             panelGlobal.add(myMap);
             panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 - 12))+7, (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180 - 37))+7, 15, 15);

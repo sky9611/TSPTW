@@ -25,7 +25,7 @@ public class DeliveryMap extends JPanel  {
     int ymax;
     int scale;
 
-    public DeliveryMap(ServiceMetier sm, int h){
+    public DeliveryMap(ServiceMetier sm, int h, double ratio){
         this.sm =sm;
         screenHeigth=h;
 
