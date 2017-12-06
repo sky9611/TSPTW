@@ -378,7 +378,7 @@ public class ServiceMetier implements Cloneable{
             Livraison l = pl.get(destinationID);
             if(l.getHeureDeDebut()==0){
                 int hd = (int)arrivalTime[i];
-                int hf = (int)arrivalTime[i]+7200;//plage horaire = [t, t+1h]
+                int hf = (int)arrivalTime[i]+14400;//plage horaire = [t, t+1h]
                 Livraison temp = new Livraison(l.getId(),l.getCoordX(),l.getCoordY(),l.getDuree(),hd,hf);
                 newListLivraison.add(temp);
             } else {

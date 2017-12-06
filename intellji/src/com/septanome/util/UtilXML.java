@@ -248,9 +248,9 @@ public class UtilXML {
                 content += tronconList.get(j).toString();
                 content += "\n";
             }
-            if(i<cheminList.size()-1) {
+            /*if(i<cheminList.size()-1) {
                 content += "depart time is: " + Double.toString(arrivalTim[i]/3600) + "\n";
-            }
+            }*/
             content += "livraison " + i + " est termine\n\n\n";
         }
         try {

@@ -49,7 +49,7 @@ public class Dashboard extends JFrame implements ActionListener{
     JButton buttonGenerateFile = new JButton("Générer un fichier");
     JLabel labelPointDetail = new JLabel("");
     JTextField textImportMapFile=new JTextField("fichiersXML/planLyonGrand.xml");
-    JTextField textImportCommandFile=new JTextField("fichiersXML/DLgrand20TW.xml");
+    JTextField textImportCommandFile=new JTextField("fichiersXML/DLgrand10TW2.xml");
     JTextField textAddPointId = new JTextField();
     JTextField textAddPointHeureDebut = new JTextField();
     JTextField textAddPointHeureFin = new JTextField();
@@ -485,6 +485,7 @@ public class Dashboard extends JFrame implements ActionListener{
                         refreshPanelPointDetail();
                         JOptionPane.showMessageDialog(null, "Réussi!", "Message", JOptionPane.PLAIN_MESSAGE);
                     }else{
+                        JOptionPane.showMessageDialog(null, "Impossible d'effectuer la modification", "Message", JOptionPane.PLAIN_MESSAGE);
                         for(Livraison l:serviceMetier.getCommande().getListLivraison()){
                             if(l.getId()==pointID) {
                                 l.setHeureDeDebut(heureDebutOrigine);
@@ -492,7 +493,11 @@ public class Dashboard extends JFrame implements ActionListener{
                             }
                         }
                         serviceMetier.initPlanLivraison();
-                        JOptionPane.showMessageDialog(null, "Impossible d'effectuer la modification", "Message", JOptionPane.PLAIN_MESSAGE);
+                        try {
+                            serviceMetier.calculerTournee(true);
+                        } catch (ClassNotFoundException | IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }catch(Exception e){
