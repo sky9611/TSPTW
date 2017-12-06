@@ -74,8 +74,8 @@ public class DeliveryMap extends JPanel  {
 
 
         for(Map.Entry<Long,Point> entry:p.entrySet()){
-            g.fillOval((int)(((((double)entry.getValue().getCoordX())-xmin)/scale*(screenHeigth))*ratio),
-                    (int)((((double)entry.getValue().getCoordY())-ymin)/scale*(screenHeigth)), 4, 4);
+            g.fillOval((int)(((((double)entry.getValue().getCoordX())-xmin)/scale*(screenHeigth))*ratio)-2,
+                    (int)((((double)entry.getValue().getCoordY())-ymin)/scale*(screenHeigth))-2, 4, 4);
         }
 
         //g.drawLine(screenHeigth,0,screenHeigth,screenHeigth);
@@ -134,14 +134,14 @@ public class DeliveryMap extends JPanel  {
         }
 
         g.setColor(Color.green);
-        int CoordX =(int)(((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth))*ratio);
-        int CoordY = (int)((((double)commande.getEntrepot().getCoordY())-ymin)/scale*(screenHeigth));
+        int CoordX =(int)(((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth))*ratio)-5;
+        int CoordY = (int)((((double)commande.getEntrepot().getCoordY())-ymin)/scale*(screenHeigth))-5;
         g.fillOval(CoordX, CoordY, 10, 10);
         g.setColor(Color.BLUE);
 
         for(Livraison l:commande.getListLivraison()){
-            CoordX =(int)(((((double)l.getCoordX())-xmin)/scale*(screenHeigth))*ratio);
-            CoordY = (int)((((double)l.getCoordY())-ymin)/scale*(screenHeigth));
+            CoordX =(int)(((((double)l.getCoordX())-xmin)/scale*(screenHeigth))*ratio)-5;
+            CoordY = (int)((((double)l.getCoordY())-ymin)/scale*(screenHeigth))-5;
             g.fillOval(CoordX, CoordY, 10, 10);
         }
 
