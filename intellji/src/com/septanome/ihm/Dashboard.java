@@ -97,7 +97,7 @@ public class Dashboard extends JFrame implements ActionListener{
 
         panelSelectPoint.setBounds(10,screenHeight-160,(int)((screenHeight-180)*ratio/1.5),70);
         panelSelectPoint.setLayout(null);
-        panelSelectPoint.setBackground(Color.blue);
+        panelSelectPoint.setBackground(Color.lightGray);
         buttonPreviousPoint.addActionListener(this);
         buttonPreviousPoint.setBounds(10,10,100,50);
         buttonNextPoint.addActionListener(this);
@@ -111,14 +111,14 @@ public class Dashboard extends JFrame implements ActionListener{
 
         panelPointDetail.setBounds((int)((screenHeight-180)*ratio/1.5)+100,250,500,150);
         panelPointDetail.setLayout(null);
-        panelPointDetail.setBackground(Color.ORANGE);
+        panelPointDetail.setBackground(Color.white);
         labelPointDetail.setBounds(10,10,450,150);
         panelPointDetail.add(labelPointDetail);
         panelPointDetail.setVisible(false);
 
         panelAddPoint.setBounds((int)((screenHeight-180)*ratio/1.5)+100,400,500,180);
         panelAddPoint.setLayout(null);
-        panelAddPoint.setBackground(Color.green);
+        panelAddPoint.setBackground(Color.lightGray);
         JLabel labelAddPointTitle = new JLabel("Ajouter une nouvelle livraison:");
         JLabel labelAddPointID = new JLabel("Point Id:                                                                                                   *");
         JLabel labelAddPointPlageHoraire = new JLabel("Plage horaire:  De                                       A                                          (format: hh:mm:ss)");
@@ -146,7 +146,7 @@ public class Dashboard extends JFrame implements ActionListener{
 
         panelRemovePoint.setBounds((int)((screenHeight-180)*ratio/1.5)+100,580,500,130);
         panelRemovePoint.setLayout(null);
-        panelRemovePoint.setBackground(Color.MAGENTA);
+        panelRemovePoint.setBackground(Color.lightGray);
         JLabel labelRemovePointTitle = new JLabel("Enlever une livraison:");
         JLabel labelRemovePointID = new JLabel("Point Id:                                                                                                   *");
         labelRemovePointTitle.setBounds(50,10,200,30);
@@ -360,7 +360,7 @@ public class Dashboard extends JFrame implements ActionListener{
                     myMap.setLayout(null);
                     panelGlobal.add(myMap);
                     panelFocusedPoint.setBounds((int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordX()) - xmin) / scale * (screenHeight-180 )*ratio +6), (int) ((((double) serviceMetier.getCommande().getEntrepot().getCoordY()) - ymin) / scale * (screenHeight-180))+6, 15, 15);
-                    panelFocusedPoint.setBackground(Color.GREEN);
+                    panelFocusedPoint.setBackground(Color.lightGray);
                     panelGlobal.add(panelFocusedPoint);
                     buttonUndo.setVisible(true);
                     repaint();

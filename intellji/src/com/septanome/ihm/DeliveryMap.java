@@ -94,11 +94,11 @@ public class DeliveryMap extends JPanel  {
         }
         Graphics2D g2 = (Graphics2D)g;
         g2.setStroke(new BasicStroke(2.0f));
-        g2.setColor(Color.yellow);
+        g2.setColor(Color.red);
         //System.out.println(sm.getTournee());
 
         for(Chemin c : sm.getTournee().getChemins()){
-            g2.setColor(Color.yellow);
+            g2.setColor(Color.red);
             for (Troncon tr:c.getTroncons()){
                 double startX = p.get(tr.getOrigineID()).getCoordX();
                 //System.out.println(startX);
@@ -136,13 +136,13 @@ public class DeliveryMap extends JPanel  {
         g.setColor(Color.green);
         int CoordX =(int)(((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth))*ratio);
         int CoordY = (int)((((double)commande.getEntrepot().getCoordY())-ymin)/scale*(screenHeigth));
-        g.fillOval(CoordX, CoordY, 8, 8);
+        g.fillOval(CoordX, CoordY, 10, 10);
         g.setColor(Color.BLUE);
 
         for(Livraison l:commande.getListLivraison()){
             CoordX =(int)(((((double)l.getCoordX())-xmin)/scale*(screenHeigth))*ratio);
             CoordY = (int)((((double)l.getCoordY())-ymin)/scale*(screenHeigth));
-            g.fillOval(CoordX, CoordY, 8, 8);
+            g.fillOval(CoordX, CoordY, 10, 10);
         }
 
 
