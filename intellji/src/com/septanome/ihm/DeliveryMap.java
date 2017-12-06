@@ -25,11 +25,13 @@ public class DeliveryMap extends JPanel  {
     int ymax;
     int scale;
     double ratio;
+    int k;
 
-    public DeliveryMap(ServiceMetier sm, int h, double ratio){
+    public DeliveryMap(ServiceMetier sm, int h, double ratio ,int k){
         this.sm =sm;
-        screenHeigth=h;
+        this.screenHeigth=h;
         this.ratio = ratio;
+        this.k= k;
         p.putAll(sm.getPlan().getPointsMap());
 
         r.putAll(sm.getPlan().getTronconsMap());
@@ -96,6 +98,7 @@ public class DeliveryMap extends JPanel  {
         //System.out.println(sm.getTournee());
 
         for(Chemin c : sm.getTournee().getChemins()){
+            g2.setColor(Color.RED);
             for (Troncon tr:c.getTroncons()){
                 double startX = p.get(tr.getOrigineID()).getCoordX();
                 //System.out.println(startX);
@@ -109,6 +112,27 @@ public class DeliveryMap extends JPanel  {
                         (int)((endY-ymin)/scale*(screenHeigth)));
             }
         }
+        g2.setStroke(new BasicStroke(5.0f));
+        for(Chemin c : sm.getTournee().getChemins()){
+            g2.setColor(Color.CYAN);
+            if(k!=-1){
+                if (sm.getTournee().getChemins().get(k-1).equals(c)) {
+                    for (Troncon tr:c.getTroncons()){
+                            double startX = p.get(tr.getOrigineID()).getCoordX();
+                            //System.out.println(startX);
+                            double startY = p.get(tr.getOrigineID()).getCoordY();
+                            //System.out.println(startY);
+                            double endX = p.get(tr.getDestinationID()).getCoordX();
+                            double endY = p.get(tr.getDestinationID()).getCoordY();
+                            g2.drawLine((int)((((startX-xmin)/scale*(screenHeigth)))*ratio),
+                                    (int)((startY-ymin)/scale*(screenHeigth)),
+                                    (int)(((endX-xmin)/scale*(screenHeigth))*ratio),
+                                    (int)((endY-ymin)/scale*(screenHeigth)));
+                        }
+                    }
+            }
+        }
+
         g.setColor(Color.green);
         int CoordX =(int)(((((double)commande.getEntrepot().getCoordX())-xmin)/scale*(screenHeigth))*ratio);
         int CoordY = (int)((((double)commande.getEntrepot().getCoordY())-ymin)/scale*(screenHeigth));
