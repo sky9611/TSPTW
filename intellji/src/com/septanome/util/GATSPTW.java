@@ -37,6 +37,8 @@ public class GATSPTW {
         idEntrepot = commande.getEntrepot().getId();
         livraisonsMap = planLivraison.getLivraisonsMap();
         OBC_number = (int)commande.getListLivraison().size()/2;
+//        pc = 1/livraisonsMap.size();
+//        pe = 1-pc;
     }
 
     private static <T> List<T> deepCopy(List<T> src) throws IOException, ClassNotFoundException {

@@ -73,7 +73,7 @@ public class Dashboard extends JFrame implements ActionListener{
 //        myMap.setBounds(10,10,900,900);
 //        myMap.setBackground(Color.cyan);
 
-        panelChooseFile.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/2,10,500,250);
+        panelChooseFile.setBounds((int)((screenHeight-180)*ratio/1.5)+100,10,500,250);
         panelChooseFile.setLayout(null);
         buttonChooseMap.addActionListener(this);
         buttonChooseCommand.addActionListener(this);
@@ -95,7 +95,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelChooseFile.add(labelImportMap);
         panelChooseFile.add(labelImportCommand);
 
-        panelSelectPoint.setBounds(10,screenHeight-160,700,70);
+        panelSelectPoint.setBounds(10,screenHeight-160,(int)((screenHeight-180)*ratio/1.5),70);
         panelSelectPoint.setLayout(null);
         panelSelectPoint.setBackground(Color.blue);
         buttonPreviousPoint.addActionListener(this);
@@ -109,20 +109,20 @@ public class Dashboard extends JFrame implements ActionListener{
         panelFocusedPoint.setBounds(0,0,0,0);
         panelFocusedPoint.setLayout(null);
 
-        panelPointDetail.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/2,250,500,150);
+        panelPointDetail.setBounds((int)((screenHeight-180)*ratio/1.5)+100,250,500,150);
         panelPointDetail.setLayout(null);
         panelPointDetail.setBackground(Color.ORANGE);
         labelPointDetail.setBounds(10,10,450,150);
         panelPointDetail.add(labelPointDetail);
         panelPointDetail.setVisible(false);
 
-        panelAddPoint.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/2,400,500,180);
+        panelAddPoint.setBounds((int)((screenHeight-180)*ratio/1.5)+100,400,500,180);
         panelAddPoint.setLayout(null);
         panelAddPoint.setBackground(Color.green);
         JLabel labelAddPointTitle = new JLabel("Ajouter une nouvelle livraison:");
         JLabel labelAddPointID = new JLabel("Point Id:                                                                                                   *");
         JLabel labelAddPointPlageHoraire = new JLabel("Plage horaire:  De                                       A                                          (format: hh:mm:ss)");
-        JLabel labelAddPointDuration = new JLabel("Duree:                                                                                                      *");
+        JLabel labelAddPointDuration = new JLabel("Duree:                                                                                                      * (minute)");
         labelAddPointID.setBounds(10,40,500,30);
         labelAddPointPlageHoraire.setBounds(10,70,500,30);
         labelAddPointDuration.setBounds(10,100,500,30);
@@ -144,7 +144,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelAddPoint.add(buttonAddPoint);
         panelAddPoint.setVisible(false);
 
-        panelRemovePoint.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/2,580,500,130);
+        panelRemovePoint.setBounds((int)((screenHeight-180)*ratio/1.5)+100,580,500,130);
         panelRemovePoint.setLayout(null);
         panelRemovePoint.setBackground(Color.MAGENTA);
         JLabel labelRemovePointTitle = new JLabel("Enlever une livraison:");
@@ -160,7 +160,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelRemovePoint.add(buttonRemovePoint);
         panelRemovePoint.setVisible(false);
 
-        panelEditPlageHoraire.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/2,710,500,180);
+        panelEditPlageHoraire.setBounds((int)((screenHeight-180)*ratio/1.5)+100,710,500,180);
         panelEditPlageHoraire.setLayout(null);
         panelEditPlageHoraire.setBackground(Color.LIGHT_GRAY);
         JLabel labelEditPointID = new JLabel("Point Id:                                                                                                   *");
@@ -183,7 +183,7 @@ public class Dashboard extends JFrame implements ActionListener{
         panelEditPlageHoraire.add(buttonEditPlageHoraire);
         panelEditPlageHoraire.setVisible(false);
 
-        panelUndo.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width/2,screenHeight-160,500,70);
+        panelUndo.setBounds((int)((screenHeight-180)*ratio/1.5)+100,screenHeight-160,500,70);
         panelUndo.setLayout(null);
         buttonUndo.setBounds(10,10,100,50);
         buttonRedo.setBounds(120,10,100,50);
@@ -310,11 +310,13 @@ public class Dashboard extends JFrame implements ActionListener{
                 panelFocusedPoint.setBackground(Color.RED);
                 panelGlobal.add(panelFocusedPoint);
                 repaint();
-                panelGlobal.remove(myMap);
-                myMap = new DeliveryMap(serviceMetier,screenHeight-180,ratio,focusedPointNumber);
-                myMap.setBounds(10,10,Toolkit.getDefaultToolkit().getScreenSize().width/4*3,screenHeight-180);
-                myMap.setLayout(null);
-                panelGlobal.add(myMap);
+                if(focusedPointNumber>0) {
+                    panelGlobal.remove(myMap);
+                    myMap = new DeliveryMap(serviceMetier, screenHeight - 180, ratio, focusedPointNumber);
+                    myMap.setBounds(10, 10, Toolkit.getDefaultToolkit().getScreenSize().width / 4 * 3, screenHeight - 180);
+                    myMap.setLayout(null);
+                    panelGlobal.add(myMap);
+                }
                 refreshPanelPointDetail();
             }else{
                 JOptionPane.showMessageDialog(null, "C'est deja le premier livraison", "Message", JOptionPane.PLAIN_MESSAGE);
@@ -367,6 +369,11 @@ public class Dashboard extends JFrame implements ActionListener{
                 }else{
                     serviceMetier.setCommande(commandeForUndo);
                     serviceMetier.initPlanLivraison();
+                    try {
+                        serviceMetier.calculerTournee(true);
+                    } catch (ClassNotFoundException | IOException e) {
+                        e.printStackTrace();
+                    }
                     JOptionPane.showMessageDialog(null, "Impossible d'ajouter cette livraison", "Message", JOptionPane.PLAIN_MESSAGE);
                     return;
                 }
