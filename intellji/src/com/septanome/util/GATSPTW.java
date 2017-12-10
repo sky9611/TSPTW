@@ -5,6 +5,9 @@ import com.septanome.model.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * genetic algorithm for TSP with time window
+ */
 public class GATSPTW {
     private PlanLivraison planLivraison = new PlanLivraison();
     private HashMap<Long, Livraison> livraisonsMap;
@@ -21,11 +24,17 @@ public class GATSPTW {
     private Tournee tournee = new Tournee();
     private int bestIndex = 0;
 
+
     public Tournee getTournee() {
         return tournee;
     }
 
-
+    /**
+     * constructeur
+     *
+     * @param planLivraison le plan de livraison
+     * @param commande le commande
+     */
     public GATSPTW(PlanLivraison planLivraison, Commande commande) {
         this.planLivraison = planLivraison;
         this.commande = commande;
@@ -38,6 +47,14 @@ public class GATSPTW {
         //pe = 1/livraisonsMap.size();
     }
 
+    /**
+     * fonction pour realiser une copie de profondeur
+     *
+     * @param src la liste a copier
+     * @return la liste copié
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private static <T> List<T> deepCopy(List<T> src) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(byteOut);
@@ -50,6 +67,13 @@ public class GATSPTW {
         return dest;
     }
 
+    /**
+     * generer une liste d'ID livraisons aléatoire
+     *
+     * @return une liste d'ID livraisons aléatoire
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     private List<Long> randomSolution() throws ClassNotFoundException, IOException {
         List<Long> listIdLivraisons = new ArrayList<>();
         listIdLivraisons.add(idEntrepot);
@@ -60,6 +84,12 @@ public class GATSPTW {
         return listIdLivraisons;
     }
 
+    /**
+     *  verifier si la solution correspond aux plages horaires
+     *
+     * @param l liste de points de livraisons
+     * @return retourne vrai si la solution correspond aux plages horaires
+     */
     private boolean isFleasible(List<Long> l) {
         for (int i = 1; i < l.size(); i++) {
             if (isViolated(l, i))
@@ -68,6 +98,13 @@ public class GATSPTW {
         return true;
     }
 
+    /**
+     *  vérifier si la plage horaire est réspecté
+     *
+     * @param l liste de points de livraisons
+     * @param index index d'un point de livraison
+     * @return retourne vrai si la contrainte sur la plage horaire de ce point n'est pas réspecté
+     */
     private boolean isViolated(List<Long> l, int index) {
         //long idStart = l.get(index);
         long idDes = l.get(index);
@@ -79,6 +116,12 @@ public class GATSPTW {
         return false;
     }
 
+    /**
+     * calculer le temps d'arrive pour chauqe point de livraison
+     *
+     * @param l liste de points de livraisons
+     * @return retourne le temps d'arrive pour chaque point de livraison
+     */
     private double[] calculeArrivalTime(List<Long> l) {
         //System.out.println("enter calculeArrivalTime");
         double[] arrivalTimes = new double[l.size()];
@@ -101,6 +144,12 @@ public class GATSPTW {
         return arrivalTimes;
     }
 
+    /**
+     * calculer la duree totale du livraison
+     *
+     * @param l liste de points de livraisons
+     * @return retourne la duree totale du livraison en seconde
+     */
     public double Cout(List<Long> l) {
         int length = l.size();
         double[] arrivalTimes = calculeArrivalTime(l);
@@ -118,6 +167,12 @@ public class GATSPTW {
         return lastLeavingTime + lastChemin.getLongeur() / vitesse;
     }
 
+    /**
+     * desorganiser une liste sauf l'element qui represente la meilleur solution
+     *
+     * @param index l'index du meilleur solution
+     * @return retourne la liste desorganisé
+     */
     public List<Integer> generateRandomOrder(int index) {
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < populationSize; i++) {
@@ -128,6 +183,14 @@ public class GATSPTW {
         return list;
     }
 
+    /**
+     *  calculer la solution
+     *
+     * @param iterMax nombre d'iteration maximum
+     * @return retourne vrai si la solution est trouvé
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     public boolean findSolution(int iterMax) throws ClassNotFoundException, IOException {
         initPopulation();
         int iter = 0;
@@ -211,6 +274,12 @@ public class GATSPTW {
         return isFleasible(bestOrder);
     }
 
+    /**
+     * initialiser la premiere génération de la population
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void initPopulation() throws IOException, ClassNotFoundException {
         for (int i = 0; i < populationSize; i++) {
             List<Long> l = randomSolution();
@@ -219,6 +288,12 @@ public class GATSPTW {
 
     }
 
+    /**
+     * fonction pour evaluer si une solution est bonne, plus la valeur de retour de grande plus la solution est meilleur
+     *
+     * @param solution la solution
+     * @return retourne une valeur pour judger si la solution est bonne
+     */
     private double fitness(List<Long> solution) {
         int length = solution.size();
         double[] arrivalTimes = new double[solution.size()];
@@ -256,6 +331,11 @@ public class GATSPTW {
         return 1 / (totalTime + result * M);
     }
 
+    /**
+     * operateur de selection
+     *
+     * @return retourne une population qui survit
+     */
     private HashMap<Integer, List<Long>> roulette() {
         double[] fitnesses = new double[population.size()];
         for (Map.Entry<Integer, List<Long>> entry : population.entrySet()) {
@@ -285,6 +365,13 @@ public class GATSPTW {
         return newPopulation;
     }
 
+    /**
+     * operateur de cross over
+     *
+     * @param s1 une solution
+     * @param s2 une autre solution
+     * @return retourne la liste hybridé
+     */
     private HashMap<Integer, List<Long>> orderBasedCrossOver(List<Long> s1, List<Long> s2) {
         List<Long> child1 = new ArrayList<>();
         List<Long> child2 = new ArrayList<>();
@@ -349,6 +436,14 @@ public class GATSPTW {
         return false;
     }
 
+    /**
+     * operateur de mutation
+     *
+     * @param l une solution
+     * @return retourne la solution varié
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private List<Long> localTwoOpt(List<Long> l) throws IOException, ClassNotFoundException {
         int length = l.size();
         for (int i = 1; i < length; i++) {
@@ -376,6 +471,10 @@ public class GATSPTW {
         return l;
     }
 
+    /**
+     * trouver la meilleur solution
+     * @return retourne la meilleur solution
+     */
     private List<Long> getBestSolution() {
         double maxFitness = 0;
         int index = 0;

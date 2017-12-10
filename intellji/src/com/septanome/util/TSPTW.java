@@ -1,3 +1,14 @@
+//
+//
+//
+//
+//
+// Cette class n'est plus utilise
+//
+//
+//
+//
+//
 package com.septanome.util;
 
 import com.septanome.model.*;
