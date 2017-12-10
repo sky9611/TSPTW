@@ -36,10 +36,10 @@ public class ServiceMetier implements Cloneable{
         initPlanLivraison();
     }
 
+
     /**
      * Initialiser le plan total a partir d'un ficher XML
-     *
-     * @nomFicherDePlan: nom du ficher xml a lire
+     * @param nomFicherDePlan nom du ficher xml a lire
      */
     public void initPlan(String nomFicherDePlan) {
         plan.setPointMap(myUtil.loadPoint(nomFicherDePlan));
@@ -49,6 +49,7 @@ public class ServiceMetier implements Cloneable{
 
     /**
      * Initialiser la commande a partir d'un ficher XML
+     * @param nomFicherDeCommande nom du ficher xml a lire
      */
     public void initCommande(String nomFicherDeCommande) {
         commande = myUtil.loadCommande(nomFicherDeCommande, plan);
@@ -85,8 +86,12 @@ public class ServiceMetier implements Cloneable{
         planLivraison.setCheminsMap(cheminsMap);
     }
 
+
     /**
      * Chercher dans le Plan total la longueur de chemin plus courte de livraison origine vers destination
+     *
+     * @param origineID id de point d'origine
+     * @return plan du chemin
      */
     private HashMap<Long, HashMap<Long, Chemin>> calcLePlusCourtChemin(long origineID) {
         //Chemin chemin = new Chemin();
@@ -367,6 +372,10 @@ public class ServiceMetier implements Cloneable{
         this.commande = new Commande(c);
     }
 
+    /**
+     * ajouter un nouveau livraison
+     * @param livraison livaison a ajouter
+     */
     public void ajouterNouveauLivraison(Livraison livraison){
         List <Chemin> listChemin = tournee.getChemins();
         commande.getListLivraison().clear();
@@ -389,6 +398,10 @@ public class ServiceMetier implements Cloneable{
         commande.addLivraison(livraison);
     }
 
+    /**
+     * calculer le temps d'arrive pour chaque point
+     * @return le temps d'arrive
+     */
     public double[] calculerArrivalTime(){
         List<Chemin> chemins = tournee.getChemins();
         List<Long> l = new ArrayList<Long>();

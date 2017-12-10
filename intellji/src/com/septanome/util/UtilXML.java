@@ -231,6 +231,11 @@ public class UtilXML {
         return point;
     }
 
+    /**
+     * generer le fichier pour le chauffeur
+     * @param filename fichier de sortie
+     * @param serviceMetier
+     */
     public void writeTourneeToFile(String filename, ServiceMetier serviceMetier) {
         String content = new String();
         List<Chemin> cheminList;
