@@ -225,6 +225,12 @@ public class GATSPTW {
 //                    newPopulation.put(index1, children.get(1));
 //                    newPopulation.put(index2, children.get(2));
                 }
+                if (Math.random() < pe) {
+                    newPopulation.put(index1, localTwoOpt(newPopulation.get(index1)));
+                }
+                if (Math.random() < pe) {
+                    newPopulation.put(index2, localTwoOpt(newPopulation.get(index1)));
+                }
             }
 //            for (Map.Entry<Integer, List<Long>> entry : newPopulation.entrySet()) {
 //                double possibility = Math.random();

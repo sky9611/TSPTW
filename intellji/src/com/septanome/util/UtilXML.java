@@ -31,6 +31,8 @@ import java.util.Vector;
 public class UtilXML {
 
     /**
+     * charger le plan de livraison
+     *
      * @param folder Path to XML file
      */
     public HashMap<Long, Point> loadPoint(String folder) {
