@@ -27,6 +27,14 @@ public class DeliveryMap extends JPanel  {
     double ratio;
     int k;
 
+    /**
+     * fonction pour generer le map
+     *
+     * @param sm service metier
+     * @param h le hauteur du map
+     * @param ratio le grandissement du largeur du map
+     * @param k le numero de chemin choisi, -1 si rien n'est choisi
+     */
     public DeliveryMap(ServiceMetier sm, int h, double ratio ,int k){
         this.sm =sm;
         this.screenHeigth=h;
@@ -69,6 +77,7 @@ public class DeliveryMap extends JPanel  {
     public int getScale(){
         return scale;
     }
+
 
     public void paintComponent(Graphics g){
 

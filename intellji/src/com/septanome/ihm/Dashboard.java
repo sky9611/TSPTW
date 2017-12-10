@@ -59,6 +59,11 @@ public class Dashboard extends JFrame implements ActionListener{
     JTextField textEditPointHeureDebut = new JTextField();
     JTextField textEditPointHeureFin = new JTextField();
 
+    /**
+     * constructeur pour generer la fenetre
+     *
+     * @param serviceMetier service metier
+     */
     public Dashboard(ServiceMetier serviceMetier){
         this.setTitle("TSPTW");
         this.setLayout(null);
@@ -69,9 +74,6 @@ public class Dashboard extends JFrame implements ActionListener{
         this.setVisible(true);
         // Pour permettre la fermeture de la fenêtre lors de l'appui sur la croix rouge
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-//        myMap.setBounds(10,10,900,900);
-//        myMap.setBackground(Color.cyan);
 
         panelChooseFile.setBounds((int)((screenHeight-180)*ratio/1.5)+100,10,500,250);
         panelChooseFile.setLayout(null);
@@ -212,7 +214,11 @@ public class Dashboard extends JFrame implements ActionListener{
         this.setContentPane(panelGlobal);
     }
 
-
+    /**
+     * listeners pour surveiller les actions
+     *
+     * @param event evenement cree par l'utilisateur
+     */
     public void actionPerformed(ActionEvent event){
         if(event.getSource() == buttonChooseMap){
             JFileChooser jfc=new JFileChooser();
@@ -570,6 +576,11 @@ public class Dashboard extends JFrame implements ActionListener{
             }
         }
     }
+
+    /**
+     * fonction pour renouveler les informations d'une point choisi
+     *
+     */
     public void refreshPanelPointDetail(){
         if(focusedPointNumber==0 || focusedPointNumber==serviceMetier.getCommande().getListLivraison().size()+1) {
             int heureDepartint = serviceMetier.getCommande().getHeureDeDepart();
